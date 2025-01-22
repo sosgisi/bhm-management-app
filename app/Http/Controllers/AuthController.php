@@ -3,13 +3,24 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AuthController extends Controller
 {
     public function guestDashboard()
     {
-        return Inertia::render('Layouts/GuestLayout');
+        return Inertia::render('Guest/Dashboard');
+    }
+
+    public function guestProducts()
+    {
+        return Inertia::render('Guest/Products');
+    }
+
+    public function guestCart()
+    {
+        return Inertia::render('Guest/Cart');
     }
 
     public function showLoginForm()
@@ -17,9 +28,28 @@ class AuthController extends Controller
         return Inertia::render('Auth/Login');
     }
 
-    public function login()
+    public function login(Request $request)
     {
-        //
+        $validate = $request->validate([
+            'name' => 'required',
+            'password' => 'required'
+        ]);
+        if (Auth::attempt($validate)) {
+            $user = Auth::user();
+
+            if ($user->role === 'Admin') {
+                // Pass $user as a prop to the admin.dashboard view
+                return Inertia::render('Admin/Dashboard', [
+                    'user' => $user,  // Passing the user as a prop to the dashboard
+                ]);
+                // if ($user->role === 'Admin') {
+                //     return redirect()->route('admin.dashboard');
+            } else {
+                return redirect()->route('guest.dashboard');
+            }
+        }
+
+        return back()->withErrors(['message' => 'Invalid Credentials']);
     }
 
     public function showRegisterForm()
