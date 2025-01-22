@@ -14,6 +14,18 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            colors: {
+                'sidebar': '#EBEBEB',
+                'underline': '#7E3C3C',
+                'gray-button': '#4D4D4D',
+                'green-button': '#597A45',
+                'red-button': '#7A4242',
+                'green-button-darker': '#436031',
+                'red-button-darker': '#603131',
+                'bg-green': 'A5F996',
+                'bg-red': '#F9AF96',
+                'bg-gray': '#8F8F8F',
+            },
         },
     },
     plugins: [],
