@@ -6,9 +6,6 @@ import { Link, useForm, usePage } from '@inertiajs/react'
 const AdminLayout = ({children}) => {
 
     const { auth } = usePage().props;
-
-    console.log(auth.user[0].name)
-
     const { post } = useForm()
 
     const handleLogout = (e) => {

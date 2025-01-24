@@ -1,6 +1,5 @@
-import { useEffect, useState } from 'react'
 import AdminLayout from '../../Layouts/AdminLayout'
-import { Link, usePage } from '@inertiajs/react'
+import { Link } from '@inertiajs/react'
 
 const Dashboard = () => {
 

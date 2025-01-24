@@ -1,3 +1,4 @@
+import { Link } from "@inertiajs/react"
 import UserLayout from "../../Layouts/UserLayout"
 
 const Dashboard = () => {
@@ -28,7 +29,7 @@ const Dashboard = () => {
                     <div className="flex items-end">
                         <p className='text-sm font-extralight text-end'>
                             status
-                            <span className='text-4xl font-bold ml-2 underline'>Pengecekan</span>
+                            <span className='text-lg font-bold ml-2 underline'>Pengecekan</span>
                         </p>
                     </div>
                 </Link>

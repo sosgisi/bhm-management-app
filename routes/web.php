@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
@@ -24,7 +25,7 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-    // Show pages
+    // show pages
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::get('/admin/income', [AdminController::class, 'income'])->name('admin.income');
@@ -38,4 +39,15 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::delete('/admin/products/{product}', [AdminController::class, 'productDestroy'])->name('admin.product.destroy');
 
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
+});
+
+Route::middleware(['auth', 'isUser'])->group(function () {
+    // show pages
+    Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/user/products', [UserController::class, 'products'])->name('user.products');
+    Route::get('/user/cart', [UserController::class, 'cart'])->name('user.cart');
+    Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders');
+    Route::get('/user/settings', [UserController::class, 'settings'])->name('user.settings');
+
+    Route::post('/user/logout', [UserController::class, 'logout'])->name('user.logout');
 });
