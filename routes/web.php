@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Middleware\RoleMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/guest/dashboard');
@@ -22,12 +23,19 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
 });
 
-Route::middleware(['auth', 'role:Admin'])->group(function () {
+Route::middleware('admin')->group(function () {
+    // Show pages
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/admin/products', [AdminController::class, 'index'])->name('admin.products.index');
-    Route::get('/admin/products/create', [AdminController::class, 'create'])->name('admin.products.create');
-    Route::post('/admin/products', [AdminController::class, 'store'])->name('admin.products.store');
-    Route::get('/admin/products/{product}/edit', [AdminController::class, 'edit'])->name('admin.products.edit');
-    Route::put('/admin/products/{product}', [AdminController::class, 'update'])->name('admin.products.update');
-    Route::delete('/admin/products/{product}', [AdminController::class, 'destroy'])->name('admin.products.destroy');
+    Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
+    Route::get('/admin/income', [AdminController::class, 'income'])->name('admin.income');
+    Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
+    Route::get('/admin/products', [AdminController::class, 'products'])->name('admin.products');
+    // CRUD products
+    Route::get('/admin/products/create', [AdminController::class, 'productCreate'])->name('admin.product.create');
+    Route::post('/admin/products', [AdminController::class, 'productStore'])->name('admin.product.store');
+    Route::get('/admin/products/{product}/edit', [AdminController::class, 'productEdit'])->name('admin.product.edit');
+    Route::put('/admin/products/{product}', [AdminController::class, 'productUpdate'])->name('admin.product.update');
+    Route::delete('/admin/products/{product}', [AdminController::class, 'productDestroy'])->name('admin.product.destroy');
+
+    Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 });

@@ -1,11 +1,17 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import AdminLayout from '../../Layouts/AdminLayout'
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 
 const Dashboard = ({user}) => {
 
+    const { auth } = usePage().props;
+
+    useEffect(() => {
+        console.log('dashboard ', auth);  
+    }, [auth]);
+
     useState(() => {
-        console.log(user)
+        console.log('dashboard user ', user)
     }, [user])
 
     return (

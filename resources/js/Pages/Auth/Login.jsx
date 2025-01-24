@@ -1,5 +1,4 @@
 import { Link, useForm } from "@inertiajs/react"
-import { useEffect } from "react"
 
 const Login = () => {
 
@@ -14,10 +13,6 @@ const Login = () => {
         post('/login')
     }
 
-    useEffect(() => {
-        console.log(errors)
-    }, [errors])
-
     return (
         <div className="flex justify-center items-center h-screen">
             <img src="/assets/toko-bangunan.jpg" alt="" className="absolute top-0 bottom-0 left-0 right-0 w-full h-screen object-cover" />
@@ -29,7 +24,7 @@ const Login = () => {
                         <p className="text-red-500">{errors.name}</p>
                     }
                     <label className="text-gray-900 font-medium text-lg">Password</label>
-                    <input value={data.password} onChange={(e) => setData('password', e.target.value)} type="password" placeholder="password" className={`${errors?.name && 'ring-1 ring-red-500'} bg-gray-300 focus:bg-gray-200 rounded px-3 py-2 shadow focus:outline-none`}/>
+                    <input value={data.password} onChange={(e) => setData('password', e.target.value)} type="password" placeholder="password" className={`${errors?.password && 'ring-1 ring-red-500'} bg-gray-300 focus:bg-gray-200 rounded px-3 py-2 shadow focus:outline-none`}/>
                     {errors?.password && 
                         <p className="text-red-500">{errors.password}</p>
                     }

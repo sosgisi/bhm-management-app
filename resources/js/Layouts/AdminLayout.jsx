@@ -1,9 +1,24 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFileInvoiceDollar, faBox, faInbox, faHouse, faGear } from '@fortawesome/free-solid-svg-icons'
-import { Link } from '@inertiajs/react'
+import { Link, useForm, usePage } from '@inertiajs/react'
+import { useEffect } from 'react'
 
 const AdminLayout = ({children}) => {
+
+    const { auth } = usePage().props
+
+    useEffect(() => {
+        console.log('layout ', auth)
+    }, [auth])
+
+    const { post } = useForm()
+
+    const handleLogout = (e) => {
+        e.preventDefault()
+        post('/admin/logout')
+    }
+
     return(
         <div>
             <div className='grid grid-cols-5 grid-rows-12 h-screen bg-slate-300'>
@@ -12,24 +27,24 @@ const AdminLayout = ({children}) => {
                     <div className='flex flex-col gap-10'>
                         <div className='flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faHouse} />
-                            <Link>Utama</Link>
+                            <Link href='/admin/dashboard'>Utama</Link>
                         </div>
                         <div className='flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faBox} />
-                            <Link href={route('admin.products.index')}>Produk</Link>
+                            <Link href='/admin/products'>Produk</Link>
                         </div>
                         <div className='flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faFileInvoiceDollar} />
-                            <Link>Pesanan</Link>
+                            <Link href='/admin/orders'>Pesanan</Link>
                         </div>
                         <div className='flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faInbox} />
-                            <Link>Pemasukan</Link>
+                            <Link href='/admin/income'>Pemasukan</Link>
                         </div>
                     </div>
                     <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                         <FontAwesomeIcon icon={faGear} />
-                        <Link>Pengaturan</Link>
+                        <Link href='/admin/settings'>Pengaturan</Link>
                     </div>
                 </nav>
                 {/* navbar */}
@@ -40,6 +55,7 @@ const AdminLayout = ({children}) => {
                         <div className='bg-gray-500 rounded-full py-1 px-2'>
                             <FontAwesomeIcon icon={faUser} className=''/>
                         </div>
+                        <Link onClick={handleLogout}>Logout</Link>
                     </div>
                 </nav>
                 <main className='bg-white col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>

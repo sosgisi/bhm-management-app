@@ -38,12 +38,9 @@ class AuthController extends Controller
             $user = Auth::user();
 
             if ($user->role === 'Admin') {
-                // Pass $user as a prop to the admin.dashboard view
-                return Inertia::render('Admin/Dashboard', [
-                    'user' => $user,  // Passing the user as a prop to the dashboard
-                ]);
-                // if ($user->role === 'Admin') {
-                //     return redirect()->route('admin.dashboard');
+                return redirect()->route('admin.dashboard');
+            } else if ($user->role === 'User') {
+                return redirect()->route('user.dashboard');
             } else {
                 return redirect()->route('guest.dashboard');
             }
