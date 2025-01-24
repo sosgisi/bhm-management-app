@@ -16,14 +16,13 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
             HandleInertiaRequests::class,
-            // RoleMiddleware::class,
             AddLinkHeadersForPreloadedAssets::class,
         ]);
     })
     ->withMiddleware(function (Middleware $middleware) {
         // Register custom middleware alias
         $middleware->alias([
-            'admin' => AdminMiddleware::class
+            'isAdmin' => AdminMiddleware::class
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

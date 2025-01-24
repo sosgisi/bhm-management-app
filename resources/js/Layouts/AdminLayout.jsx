@@ -2,15 +2,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFileInvoiceDollar, faBox, faInbox, faHouse, faGear } from '@fortawesome/free-solid-svg-icons'
 import { Link, useForm, usePage } from '@inertiajs/react'
-import { useEffect } from 'react'
 
 const AdminLayout = ({children}) => {
 
-    const { auth } = usePage().props
+    const { auth } = usePage().props;
 
-    useEffect(() => {
-        console.log('layout ', auth)
-    }, [auth])
+    console.log(auth.user[0].name)
 
     const { post } = useForm()
 
@@ -51,7 +48,7 @@ const AdminLayout = ({children}) => {
                 <nav className='flex justify-between items-center px-5 bg-black text-white col-start-1 col-end-6'>
                     <h1 className="text-white text-3xl font-medium underline cursor-pointer underline-offset-1 decoration-4 decoration-underline">BHM</h1>
                     <div className='flex justify-center items-center gap-3 font-thin cursor-pointer'>
-                        <h1>Admin</h1>
+                        <h1>{auth.user[0].name}</h1>
                         <div className='bg-gray-500 rounded-full py-1 px-2'>
                             <FontAwesomeIcon icon={faUser} className=''/>
                         </div>

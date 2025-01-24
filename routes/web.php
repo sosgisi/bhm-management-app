@@ -23,7 +23,7 @@ Route::middleware('guest')->group(function () {
     Route::post('/forgot-password', [AuthController::class, 'sendResetLink'])->name('password.email');
 });
 
-Route::middleware('admin')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->group(function () {
     // Show pages
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
