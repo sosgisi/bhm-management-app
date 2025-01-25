@@ -3,8 +3,12 @@ import GuestLayout from "../../Layouts/GuestLayout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faCirclePlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons"
 import { faSquarePlus } from "@fortawesome/free-regular-svg-icons"
+import { useState } from "react"
 
 const Products = () => {
+
+    const [sumOfItem, setSumOfItem] = useState(1)
+
     return(
         <GuestLayout>
             <div className='px-8 py-5 flex justify-between items-center'>
@@ -17,7 +21,7 @@ const Products = () => {
             <div className="p-10">
                 <table className="rounded shadow-xl w-full">
                     <thead className="bg-gray-300 font-bold text-gray-800">
-                        <tr className="">
+                        <tr>
                             <td className="py-1 px-3">Foto</td>
                             <td>Nama</td>
                             <td>Harga</td>
@@ -28,9 +32,9 @@ const Products = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr className="hover:bg-gray-100 cursor-pointer">
+                        <tr>
                             <td className="p-3"><img src="/assets/logo.png" alt="" className="w-7 h-7 bg-black"/></td>
-                            <td>Cat kuda terbang</td>
+                            <td className="hover:underline cursor-pointer">Cat kuda terbang</td>
                             <td>Rp. 12.000</td>
                             <td>1</td>
                             <td>32</td>
@@ -42,9 +46,9 @@ const Products = () => {
                             <td>
                                 <div className="flex justify-between items-center mx-3">
                                     <div className="flex gap-3 items-center">
-                                        <FontAwesomeIcon icon={faCircleMinus} className="size-5 hover:text-gray-700 cursor-pointer"/>
-                                        <h1 className="text-xl">1</h1> 
-                                        <FontAwesomeIcon icon={faCirclePlus} className="size-5 hover:text-gray-700 cursor-pointer"/>
+                                        <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum-1)} icon={faCircleMinus} className={`${sumOfItem===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
+                                        <h1 className="text-xl">{sumOfItem}</h1> 
+                                        <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum+1)} icon={faCirclePlus} className={`size-5 hover:text-gray-700 cursor-pointer`}/>
                                     </div>
                                     <FontAwesomeIcon icon={faSquarePlus} className="size-6 hover:text-green-button cursor-pointer" />
                                 </div>

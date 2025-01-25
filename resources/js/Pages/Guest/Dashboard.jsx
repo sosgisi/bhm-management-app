@@ -15,15 +15,6 @@ const Dashboard = () => {
                         </p>
                     </div>
                 </Link>
-                <Link className='flex justify-between gap-8 h-32 border p-3 shadow-xl hover:scale-105 transform duration-150 rounded-tl rounded-tr border-b-4 border-b-indigo-500 hover:bg-gray-100'>
-                    <h1 className='text-2xl font-medium'>Keranjang</h1>
-                    <div className="flex items-end">
-                        <p className='text-sm font-extralight text-end'>
-                            Total
-                            <span className='text-4xl font-bold ml-2'>12</span>
-                        </p>
-                    </div>
-                </Link>
             </div>
         </GuestLayout>
     )

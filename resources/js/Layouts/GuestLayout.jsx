@@ -16,10 +16,6 @@ const GuestLayout = ({children}) => {
                         <FontAwesomeIcon icon={faBox} />
                         <Link href='/guest/products'>Produk</Link>
                     </div>
-                    <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
-                        <FontAwesomeIcon icon={faCartShopping} />
-                        <Link href='/guest/cart'>Keranjang</Link>
-                    </div>
                 </nav>
                 {/* navbar */}
                 <nav className='flex justify-between items-center px-5 bg-black text-white col-start-1 col-end-6'>
