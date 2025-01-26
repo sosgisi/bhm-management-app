@@ -8,14 +8,14 @@ const GuestLayout = ({children}) => {
             <div className='grid grid-cols-5 grid-rows-12 h-screen bg-slate-300'>
                 {/* sidebar */}
                 <nav className='p-3 lg:p-5 hidden md:flex flex-col gap-10 font-bold lg:text-xl md:text-md bg-sidebar md:row-start-2 row-end-13'>
-                    <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                    <Link href='/guest/dashboard' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                         <FontAwesomeIcon icon={faHouse} />
-                        <Link href='/guest/dashboard'>Utama</Link>
-                    </div>
-                    <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                        Utama
+                    </Link>
+                    <Link href='/guest/products' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                         <FontAwesomeIcon icon={faBox} />
-                        <Link href='/guest/products'>Produk</Link>
-                    </div>
+                        Produk
+                    </Link>
                 </nav>
                 {/* navbar */}
                 <nav className='flex justify-between items-center px-5 bg-black text-white col-start-1 col-end-6'>

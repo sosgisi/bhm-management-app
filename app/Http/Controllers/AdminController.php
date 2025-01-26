@@ -40,10 +40,11 @@ class AdminController extends Controller
                     'id' => $product->id,
                     'name' => $product->name,
                     'description' => $product->description,
-                    'image' => Storage::url($product->image), // Public URL to the image
                     'price' => $product->price,
-                    'quantity' => $product->quantity,
                     'unit' => $product->unit,
+                    'image' => Storage::url($product->image), // Public URL to the image
+                    'quantity' => $product->quantity,
+                    'category' => $product->category
                 ];
             }),
         ]);
@@ -60,7 +61,8 @@ class AdminController extends Controller
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
             'image' => 'required|file|mimes:jpg,jpeg,png|max:2048',
-            'quantity' => 'integer'
+            'quantity' => 'integer',
+            'category' => 'nullable|string'
         ]);
 
 
@@ -72,9 +74,10 @@ class AdminController extends Controller
             'name' => $validated['name'],
             'description' => $validated['description'],
             'price' => $validated['price'],
-            'quantity' => $validated['quantity'],
             'unit' => $validated['unit'],
             'image' => $imagePath, // Store the image path
+            'quantity' => $validated['quantity'],
+            'category' => $validated['category'],
         ]);
 
         // Product::create($validate);
@@ -82,23 +85,51 @@ class AdminController extends Controller
     }
     public function productEdit(Product $product)
     {
-        return Inertia::render('Admin/Products/Edit', ['product' => $product]);
+        $newProduct = [
+            'id' => $product->id,
+            'name' => $product->name,
+            'description' => $product->description,
+            'image' => Storage::url($product->image),
+            'price' => $product->price,
+            'unit' => $product->unit,
+            'quantity' => $product->quantity,
+            'category' => $product->category,
+        ];
+        return Inertia::render('Admin/Products/Edit', ['product' => $newProduct]);
     }
     public function productUpdate(Request $request, Product $product)
     {
         $validate = $request->validate([
             'name' => 'required|string',
-            'description' => 'string',
-            'price' => 'required|decimal:min:0.01|max:99999999.99',
-            'image' => 'string',
-            'quantity' => 'integer'
+            'description' => 'string|nullable',
+            'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
+            'unit' => 'required|string',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'quantity' => 'integer',
+            'category' => 'nullable|string',
         ]);
 
+        // Check if a new image is uploaded
+        if ($request->hasFile('image')) {
+            // Delete the old image if it exists
+            if ($product->image && Storage::disk('public')->exists($product->image)) {
+                Storage::disk('public')->delete($product->image);
+            }
+
+            // Store the new image
+            $validate['image'] = $request->file('image')->store('products', 'public');
+        }
+
+        // Update product with validated data
         $product->update($validate);
+
         return redirect()->route('admin.products')->with('success', 'Produk berhasil diperbarui!');
     }
     public function productDestroy(Product $product)
     {
+        if ($product->image) {
+            Storage::disk('public')->delete($product->image);
+        }
         $product->delete();
         return redirect()->route('admin.products')->with('success', 'Produk berhasil dihapus!');
     }

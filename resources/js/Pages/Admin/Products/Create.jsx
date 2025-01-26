@@ -1,12 +1,9 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTrash } from "@fortawesome/free-solid-svg-icons"
 import { useForm } from "@inertiajs/react"
 import { useEffect, useState } from "react"
 
 const Create = () => {
 
-    // const [file, setFile] = useState()
     const [preview, setPreview] = useState()
     const {data, setData, post, processing, errors} = useForm({
         name: null,
@@ -15,19 +12,14 @@ const Create = () => {
         unit: null, 
         image: null,
         quantity: null,
+        category: 'Produk',
     })
-
-    // useEffect(() => {
-    //     console.log('file ', file)
-    //     console.log('data.image ', data.image)
-    // }, [file])
 
     const handleFileChange = (e) => {
         e.preventDefault()
         const selectedFile = e.target.files[0]
         console.log('selectedFile ', selectedFile)
         setData('image', selectedFile)
-        // setFile(selectedFile)
         if(selectedFile){
             const reader = new FileReader()
             reader.onload = (event) => {
@@ -60,6 +52,7 @@ const Create = () => {
                             <p className="font-bold">1x</p>
                             <select value={data.unit} onChange={(e) => setData('unit', e.target.value)} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2">
                                 <option value=""></option>
+                                <option value="pcs">pcs</option>
                                 <option value="kg">kg</option>
                                 <option value="cm">cm</option>
                                 <option value="m">m</option>
@@ -83,10 +76,20 @@ const Create = () => {
                         <input type="file" onChange={handleFileChange} className="w-64"/>
                     </div>
                 </div>
-                <div className="flex flex-col justify-between w-1/2 gap-2">
-                    <div className="flex flex-col">
+                <div className="flex flex-col justify-between w-1/2">
+                    <div className="flex flex-col gap-2">
                         <label className="font-medium text-lg">Deskripsi</label>
                         <textarea value={data.description} onChange={(e) => setData('description', e.target.value)} rows={7} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3"></textarea>
+                    </div>
+                    <div className="flex justify-end items-center gap-3">
+                        <label className="font-medium text-lg">Kategory: </label>
+                        <select value={data.category} onChange={(e) => setData('category', e.target.value)} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 w-40 py-1 px-2">
+                            <option value="Produk">Barang (default)</option>
+                            <option value="Semen">Semen</option>
+                            <option value="Kayu">Kayu</option>
+                            <option value="Cat">Cat</option>
+                            <option value="Besi">Besi</option>
+                        </select>
                     </div>
                     <div className="flex justify-end gap-5">
                         <button className="bg-red-button hover:bg-red-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Batal</button>

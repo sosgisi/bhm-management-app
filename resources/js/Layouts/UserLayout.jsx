@@ -21,27 +21,27 @@ const UserLayout = ({children}) => {
                 {/* sidebar */}
                 <nav className='p-3 lg:p-5 hidden md:flex flex-col justify-between font-bold lg:text-xl md:text-md bg-sidebar md:row-start-2 row-end-13'>
                     <div className='flex flex-col gap-10'>
-                        <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                        <Link href='/user/dashboard' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faHouse} />
-                            <Link href='/user/dashboard'>Utama</Link>
-                        </div>
-                        <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                            Utama
+                        </Link>
+                        <Link href='/user/products' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faBox} />
-                            <Link href='/user/products'>Produk</Link>
-                        </div>
-                        <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                            Produk
+                        </Link>
+                        <Link href='/user/cart' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faCartShopping} />
-                            <Link href='/user/cart'>Keranjang</Link>
-                        </div>
-                        <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                            Keranjang
+                        </Link>
+                        <Link href='/user/orders' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                             <FontAwesomeIcon icon={faTruck} />
-                            <Link href='/user/orders'>Pesanan Saya</Link>
-                        </div>
+                            Pesanan Saya
+                        </Link>
                     </div>
-                    <div className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                    <Link href='/user/settings' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
                         <FontAwesomeIcon icon={faGear} />
-                        <Link href='/user/settings'>Pengaturan</Link>
-                    </div>
+                        Pengaturan
+                    </Link>
                 </nav>
                 {/* navbar */}
                 <nav className='flex justify-between items-center px-5 bg-black text-white col-start-1 col-end-6'>

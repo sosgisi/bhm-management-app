@@ -7,7 +7,6 @@ import { useState } from "react"
 const Index = ({products}) => {
 
     const [kebabClicked, setKebabClicked] = useState({})
-    // const {delete: destroy} = useForm()
 
     const toggleKebabMenu = (productId) => {
         setKebabClicked(prevState => ({

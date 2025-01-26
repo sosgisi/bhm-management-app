@@ -23,27 +23,27 @@ const AdminLayout = ({children}) => {
                 {/* sidebar */}
                 <nav className='p-3 lg:p-5 hidden md:flex flex-col justify-between font-bold lg:text-lg md:text-md bg-sidebar md:row-start-2 row-end-13'>
                     <div className='flex flex-col gap-10'>
-                        <div className={`${url==='/admin/dashboard' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
+                        <Link href='/admin/dashboard' className={`${url==='/admin/dashboard' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
                             <FontAwesomeIcon icon={faHouse} />
-                            <Link href='/admin/dashboard'>Utama</Link>
-                        </div>
-                        <div className={`${url==='/admin/products' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
+                            Utama
+                        </Link>
+                        <Link href='/admin/products' className={`${url==='/admin/products' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
                             <FontAwesomeIcon icon={faBox} />
-                            <Link href='/admin/products'>Produk</Link>
-                        </div>
-                        <div className={`${url==='/admin/orders' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
+                            Produk
+                        </Link>
+                        <Link href='/admin/orders' className={`${url==='/admin/orders' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
                             <FontAwesomeIcon icon={faFileInvoiceDollar} />
-                            <Link href='/admin/orders'>Pesanan</Link>
-                        </div>
-                        <div className={`${url==='/admin/income' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
+                            Pesanan
+                        </Link>
+                        <Link href='/admin/income' className={`${url==='/admin/income' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
                             <FontAwesomeIcon icon={faInbox} />
-                            <Link href='/admin/income'>Pemasukan</Link>
-                        </div>
+                            Pemasukan
+                        </Link>
                     </div>
-                    <div className={`${url==='/admin/settings' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-4 rounded transform duration-300`}>
+                    <Link href='/admin/settings' className={`${url==='/admin/settings' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-4 rounded transform duration-300`}>
                         <FontAwesomeIcon icon={faGear} />
-                        <Link href='/admin/settings'>Pengaturan</Link>
-                    </div>
+                        Pengaturan
+                    </Link>
                 </nav>
                 {/* navbar */}
                 <nav className='flex justify-between items-center px-5 bg-black text-white col-start-1 col-end-6'>
