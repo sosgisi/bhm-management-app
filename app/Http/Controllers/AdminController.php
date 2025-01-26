@@ -35,7 +35,7 @@ class AdminController extends Controller
     {
         // $products = Product::all();
         return Inertia::render('Admin/Products/Index', [
-            'products' => Product::all()->map(function ($product) {
+            'products' => Product::latest()->get()->map(function ($product) {
                 return [
                     'id' => $product->id,
                     'name' => $product->name,

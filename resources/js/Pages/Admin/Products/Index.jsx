@@ -1,5 +1,5 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
-import { Link } from '@inertiajs/react'
+import { Link, router, useForm } from '@inertiajs/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
@@ -7,6 +7,7 @@ import { useState } from "react"
 const Index = ({products}) => {
 
     const [kebabClicked, setKebabClicked] = useState({})
+    // const {delete: destroy} = useForm()
 
     const toggleKebabMenu = (productId) => {
         setKebabClicked(prevState => ({
@@ -14,6 +15,15 @@ const Index = ({products}) => {
             [productId]: !prevState[productId]
         }));
     };
+
+    const handleDelete = (e, productId) => {
+        e.preventDefault()
+        if (confirm('Are you sure you want to delete this product?')) {
+            router.post(`/admin/products/${productId}`, {
+                _method: "delete", // Explicitly send the DELETE method
+            });
+        }
+    }
 
     return(
         <AdminLayout>
@@ -42,7 +52,7 @@ const Index = ({products}) => {
                         {
                             products.map((product, i) => (
                                 <tr key={i}>
-                                    <td className="p-3 flex justify-center items-center"><img src={product.image} alt="" className="w-7 h-7"/></td>
+                                    <td className="p-3 flex justify-center items-center"><img src={product.image} alt="" className="h-7"/></td>
                                     <td className="hover:underline cursor-pointer">{product.name}</td>
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>
@@ -61,7 +71,7 @@ const Index = ({products}) => {
                                             kebabClicked[product.id] && (
                                             <div className="absolute flex flex-col w-20 gap-1 bg-black bg-opacity-50 top-0 right-12 text-white rounded">
                                                 <Link href={`/admin/products/${product.id}/edit`} className="bg-gray-button hover:bg-gray-button-darker rounded">Edit</Link>
-                                                <button className="bg-red-button hover:bg-red-button-darker rounded">Delete</button>
+                                                <button onClick={(e) => handleDelete(e, product.id)} className="bg-red-button hover:bg-red-button-darker rounded">Delete</button>
                                             </div> )
                                         }
                                     </td>
