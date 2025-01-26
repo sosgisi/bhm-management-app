@@ -44,14 +44,14 @@ const Products = () => {
                                 </div>
                             </td>
                             <td>
-                                <div className="flex justify-between items-center mx-3">
-                                    <div className="flex gap-3 items-center">
-                                        <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum-1)} icon={faCircleMinus} className={`${sumOfItem===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
-                                        <h1 className="text-xl">{sumOfItem}</h1> 
-                                        <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum+1)} icon={faCirclePlus} className={`size-5 hover:text-gray-700 cursor-pointer`}/>
-                                    </div>
-                                    <FontAwesomeIcon icon={faSquarePlus} className="size-6 hover:text-green-button cursor-pointer" />
+                                <div className="flex justify-between items-center mx-3 gap-3">
+                                    <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum-1)} icon={faCircleMinus} className={`${sumOfItem===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
+                                    <h1 className="text-xl">{sumOfItem}</h1> 
+                                    <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum+1)} icon={faCirclePlus} className={`size-5 hover:text-gray-700 cursor-pointer`}/>
                                 </div>
+                            </td>
+                            <td>
+                                <FontAwesomeIcon icon={faCartPlus} className="size-7  text-green-button hover:text-green-button-darker cursor-pointer" />
                             </td>
                         </tr>
                     </tbody>

@@ -2,13 +2,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFileInvoiceDollar, faBox, faInbox, faHouse, faGear, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { Link, useForm, usePage } from '@inertiajs/react'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const AdminLayout = ({children}) => {
 
     const { auth } = usePage().props;
     const { post } = useForm()
-    const { url, component } = usePage()
+    const { url } = usePage()
 
     const [profileClick, setProfileClick] = useState(false)
 
@@ -16,11 +16,6 @@ const AdminLayout = ({children}) => {
         e.preventDefault()
         post('/admin/logout')
     }
-
-    useEffect(() => {
-        console.log('url ', url)
-        console.log('component ', component)
-    }, [url, component])
 
     return(
         <div>

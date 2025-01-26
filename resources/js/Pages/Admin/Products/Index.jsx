@@ -1,12 +1,19 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
 import { Link } from '@inertiajs/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass, faCircleMinus, faCirclePlus, faSquarePlus, faCartPlus } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faEllipsisVertical } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
 
-const Index = () => {
+const Index = ({products}) => {
 
-    const [sumOfItem, setSumOfItem] = useState(1)
+    const [kebabClicked, setKebabClicked] = useState({})
+
+    const toggleKebabMenu = (productId) => {
+        setKebabClicked(prevState => ({
+            ...prevState,
+            [productId]: !prevState[productId]
+        }));
+    };
 
     return(
         <AdminLayout>
@@ -25,36 +32,42 @@ const Index = () => {
                             <th className="py-1 px-3">Foto</th>
                             <th>Nama</th>
                             <th>Harga</th>
-                            <th>Jumlah</th>
+                            <th></th>
                             <th>Kuantitas</th>
                             <th>Status</th>
-                            <th>Keranjang</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="p-3 flex justify-center items-center"><img src="/assets/logo.png" alt="" className="w-7 h-7 bg-black"/></td>
-                            <td className="hover:underline cursor-pointer">Cat kuda terbang</td>
-                            <td>Rp. 12.000</td>
-                            <td>1</td>
-                            <td>32</td>
-                            <td>
-                                <div className="flex justify-center items-center bg-green-area rounded-full py-1">
-                                    in stock
-                                </div>
-                            </td>
-                            <td>
-                                <div className="flex justify-center gap-3 items-center mx-3">
-                                    <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum-1)} icon={faCircleMinus} className={`${sumOfItem===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
-                                    <h1 className="text-xl">{sumOfItem}</h1> 
-                                    <FontAwesomeIcon onClick={() => setSumOfItem((prevSum) => prevSum+1)} icon={faCirclePlus} className={`size-5 hover:text-gray-700 cursor-pointer`}/>
-                                </div>
-                            </td>
-                            <td>
-                                <FontAwesomeIcon icon={faCartPlus} className="size-7  text-green-button hover:text-green-button-darker cursor-pointer" />
-                            </td>
-                        </tr>
+                        {
+                            products.map((product, i) => (
+                                <tr key={i}>
+                                    <td className="p-3 flex justify-center items-center"><img src={product.image} alt="" className="w-7 h-7"/></td>
+                                    <td className="hover:underline cursor-pointer">{product.name}</td>
+                                    <td>Rp. {product.price}</td>
+                                    <td>/{product.unit}</td>
+                                    <td>{product.quantity}</td>
+                                    <td>
+                                        <div className={`flex justify-center items-center ${product.quantity>0 ? 'bg-green-area' : 'bg-red-area'} rounded-full py-1`}>
+                                            { product.quantity > 0 
+                                             ? 'in stock'
+                                             : 'out of stock'
+                                            }
+                                        </div>
+                                    </td>
+                                    <td className="relative">
+                                        <FontAwesomeIcon icon={faEllipsisVertical} onClick={() => toggleKebabMenu(product.id)} className="size-5 hover:bg-gray-300 rounded-full p-1"/>
+                                        {
+                                            kebabClicked[product.id] && (
+                                            <div className="absolute flex flex-col w-20 gap-1 bg-black bg-opacity-50 top-0 right-12 text-white rounded">
+                                                <Link href={`/admin/products/${product.id}/edit`} className="bg-gray-button hover:bg-gray-button-darker rounded">Edit</Link>
+                                                <button className="bg-red-button hover:bg-red-button-darker rounded">Delete</button>
+                                            </div> )
+                                        }
+                                    </td>
+                                </tr>
+                            ))
+                        }
                     </tbody>
                 </table>
             </div>

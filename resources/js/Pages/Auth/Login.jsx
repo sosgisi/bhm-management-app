@@ -8,7 +8,6 @@ const Login = () => {
     })
 
     const handleLogin = (e) => {
-        console.log('here')
         e.preventDefault(); 
         post('/login')
     }
