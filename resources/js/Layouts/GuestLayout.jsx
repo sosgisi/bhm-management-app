@@ -1,18 +1,21 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBox, faHouse, faCartShopping } from '@fortawesome/free-solid-svg-icons'
-import { Link } from '@inertiajs/react'
+import { Link, usePage } from '@inertiajs/react'
 
 const GuestLayout = ({children}) => {
+
+    const { url } = usePage()
+
     return(
         <div>
             <div className='grid grid-cols-5 grid-rows-12 h-screen bg-slate-300'>
                 {/* sidebar */}
                 <nav className='p-3 lg:p-5 hidden md:flex flex-col gap-10 font-bold lg:text-xl md:text-md bg-sidebar md:row-start-2 row-end-13'>
-                    <Link href='/guest/dashboard' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                    <Link href='/guest/dashboard' className={`${url==='/guest/dashboard' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
                         <FontAwesomeIcon icon={faHouse} />
                         Utama
                     </Link>
-                    <Link href='/guest/products' className='flex gap-3 items-center justify-start py-1 px-4 rounded hover:bg-gray-50 cursor-pointer transform duration-300'>
+                    <Link href='/guest/products' className={`${url==='/guest/products' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
                         <FontAwesomeIcon icon={faBox} />
                         Produk
                     </Link>

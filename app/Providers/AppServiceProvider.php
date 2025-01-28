@@ -22,6 +22,19 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Inertia::share([
+            'auth' => function (Request $request) {
+                return [
+                    'user' => $request->user()
+                        ? [$request->user()->only('id', 'name', 'email', 'role')]
+                        : null,
+                ];
+            },
+            'flash' => function (Request $request) {
+                return [
+                    'success' => $request->session()->get('success'),
+                    'message' => $request->session()->get('message'),
+                ];
+            },
             'errors' => function () {
                 return session()->get('errors')
                     ? session()->get('errors')->getBag('default')->getMessages()
@@ -29,14 +42,14 @@ class AppServiceProvider extends ServiceProvider
             },
         ]);
 
-        Inertia::share([
-            'auth' => function (Request $request) {
-                return [
-                    'user' => $request->user()
-                        ? [$request->user()->only('id', 'name', 'email', 'role')]
-                        : null,
-                ];
-            }
-        ]);
+        // Inertia::share([
+        //     'auth' => function (Request $request) {
+        //         return [
+        //             'user' => $request->user()
+        //                 ? [$request->user()->only('id', 'name', 'email', 'role')]
+        //                 : null,
+        //         ];
+        //     }
+        // ]);
     }
 }

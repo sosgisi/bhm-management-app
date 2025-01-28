@@ -19,13 +19,20 @@ class Product extends Model
         'category',
     ];
 
-    public function admin()
+    public function users()
     {
-        return $this->belongsTo(Admin::class);
+        return $this->belongsToMany(User::class, 'user_product')
+            ->withPivot('quantity')
+            ->withTimestamps();
     }
 
-    public function cart()
-    {
-        return $this->belongsTo(Cart::class);
-    }
+    // public function admin()
+    // {
+    //     return $this->belongsTo(Admin::class);
+    // }
+
+    // public function cart()
+    // {
+    //     return $this->belongsTo(Cart::class);
+    // }
 }

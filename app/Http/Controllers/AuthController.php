@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -10,7 +11,11 @@ class AuthController extends Controller
 {
     public function guestDashboard()
     {
-        return Inertia::render('Guest/Dashboard');
+        $products = Product::all();
+        $productsTotal = $products->count();
+        return Inertia::render('Guest/Dashboard', [
+            'productsTotal' => $productsTotal
+        ]);
     }
 
     public function guestProducts()
@@ -40,14 +45,14 @@ class AuthController extends Controller
             if ($user->role === 'Admin') {
                 return redirect()->route('admin.dashboard');
             } else if ($user->role === 'User') {
-                // return dd($user);
                 return redirect()->route('user.dashboard');
             } else {
                 return redirect()->route('guest.dashboard');
             }
         }
 
-        return back()->withErrors(['message' => 'Invalid Credentials']);
+        return redirect()->back()->with('message', 'Invalid Credentials');
+        // return back()->withErrors(['errors', 'Invalid Credentials']);
     }
 
     public function showRegisterForm()

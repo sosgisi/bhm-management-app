@@ -6,12 +6,12 @@ const Create = () => {
 
     const [preview, setPreview] = useState()
     const {data, setData, post, processing, errors} = useForm({
-        name: null,
-        description: null,
-        price: null,
-        unit: null, 
-        image: null,
-        quantity: null,
+        name: '',
+        description: '',
+        price: 0,
+        unit: '', 
+        image: '',
+        quantity: 0,
         category: 'Produk',
     })
 
