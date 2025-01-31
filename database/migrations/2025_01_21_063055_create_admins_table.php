@@ -1,14 +1,11 @@
 <?php
 
-use App\Models\Product;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    use HasFactory;
     /**
      * Run the migrations.
      */
@@ -26,10 +23,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('admins');
-    }
-
-    public function products()
-    {
-        return $this->hasMany(Product::class);
     }
 };

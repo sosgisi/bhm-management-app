@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import { useForm, usePage } from "@inertiajs/react"
 
 const Products = ({products}) => {
-
+    
     const [tempAmount, setTempAmount] = useState(() => new Array(products.length).fill(1))
     const { data, setData, post } = useForm({
         'quantity': 1
@@ -70,7 +70,7 @@ const Products = ({products}) => {
                         {
                             products.map((product, i) => (
                                 <tr key={i}>
-                                    <td className="p-3 flex justify-center items-center"><img src={product.image} alt="" className="h-7"/></td>
+                                    <td className="p-3 flex justify-center items-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
                                     <td className="hover:underline cursor-pointer">{product.name}</td>
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>

@@ -9,8 +9,6 @@ const UserLayout = ({children}) => {
     const { post } = useForm()
     const { url } = usePage()
 
-    console.log(auth)
-
     const handleLogout = (e) => {
         e.preventDefault()
         post('/user/logout')
@@ -55,7 +53,7 @@ const UserLayout = ({children}) => {
                         <Link onClick={handleLogout}>Logout</Link>
                     </div>
                 </nav>
-                <main className='bg-white col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>
+                <main className='bg-main col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>
                     {children}
                 </main>
             </div>

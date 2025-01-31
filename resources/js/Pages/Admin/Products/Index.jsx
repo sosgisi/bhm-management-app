@@ -6,6 +6,8 @@ import { useState } from "react"
 
 const Index = ({products}) => {
 
+    console.log(products)
+
     const [kebabClicked, setKebabClicked] = useState({})
 
     const toggleKebabMenu = (productId) => {
@@ -51,7 +53,7 @@ const Index = ({products}) => {
                         {
                             products.map((product, i) => (
                                 <tr key={i}>
-                                    <td className="p-3 flex justify-center items-center"><img src={product.image} alt="" className="h-7"/></td>
+                                    <td className="p-3 flex justify-center items-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
                                     <td className="hover:underline cursor-pointer">{product.name}</td>
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>

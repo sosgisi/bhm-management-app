@@ -10,6 +10,8 @@ class Admin extends Model
 {
     use HasFactory, HasRoles;
 
+    protected $fillable = ['name'];
+
     public function products()
     {
         return $this->hasMany(Product::class);

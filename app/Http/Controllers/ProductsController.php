@@ -23,18 +23,7 @@ class ProductsController extends Controller
             }
         }
         return Inertia::render($path, [
-            'products' => Product::latest()->get()->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'unit' => $product->unit,
-                    'image' => Storage::url($product->image), // Public URL to the image
-                    'quantity' => $product->quantity,
-                    'category' => $product->category
-                ];
-            }),
+            'products' => Product::latest()->get()
         ]);
     }
     public function productCreate()
@@ -55,7 +44,7 @@ class ProductsController extends Controller
 
 
         // Upload the image and store it in the 'public/products' directory
-        $imagePath = $request->file('image')->store('products', 'public');
+        $imagePath = $request->file('image')->store('product-images');
 
         // Create a new product and save the image path along with other data
         Product::create([
@@ -105,7 +94,7 @@ class ProductsController extends Controller
             }
 
             // Store the new image
-            $validate['image'] = $request->file('image')->store('products', 'public');
+            $validate['image'] = $request->file('image')->store('product-images');
         }
 
         // Update product with validated data

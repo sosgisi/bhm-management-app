@@ -26,6 +26,7 @@ export default {
                 'green-area': '#A5F996',
                 'red-area': '#F9AF96',
                 'gray-area': '#8F8F8F',
+                'main': '#F1F1F1'
             },
         },
     },

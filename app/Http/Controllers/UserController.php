@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
+use function Pest\Laravel\get;
+
 class UserController extends Controller
 {
     public function dashboard()
@@ -43,36 +45,29 @@ class UserController extends Controller
             ->get();
 
         return Inertia::render('User/Cart', [
-            'products' => $products->map(function ($product) {
-                return [
-                    'id' => $product->id,
-                    'name' => $product->name,
-                    'description' => $product->description,
-                    'price' => $product->price,
-                    'unit' => $product->unit,
-                    'image' => Storage::url($product->image),
-                    'quantity' => $product->quantity,
-                    'category' => $product->category,
-                    'created_at' => $product->created_at,
-                    'updated_at' => $product->updated_at,
-                    'pivot' => [
-                        'user_id' => $product->pivot->user_id,
-                        'product_id' => $product->pivot->product_id,
-                        'quantity' => $product->pivot->quantity,
-                        'created_at' => $product->pivot->created_at,
-                        'updated_at' => $product->pivot->updated_at
-                    ]
-                ];
-            }),
+            'products' => $products
         ]);
     }
+
     public function orders()
     {
-        return Inertia::render('User/Orders');
+        $user = Auth::user();
+        /** @var \App\Models\User $user */
+        $orders = $user->orders()->with('products')->get();
+
+        return Inertia::render('User/Orders', [
+            'orders' => $orders
+        ]);
     }
-    public function settings()
+
+    public function detailedOrder($orderId)
     {
-        return Inertia::render('User/Settings');
+        $user = Auth::user();
+        /** @var \App\Models\User $user */
+        $order = $user->orders()->with('products')->where('id', $orderId)->first();
+        return Inertia::render('User/DetailedOrder', [
+            'order' => $order
+        ]);
     }
 
     public function addProduct(Request $request, $productId)
@@ -111,26 +106,31 @@ class UserController extends Controller
         return redirect()->back();
     }
 
+    public function destroyProduct($productId)
+    {
+        $user = Auth::user();
+        /** @var \App\Models\User $user */
+        $user->products()->detach($productId);
+        return redirect()->back()->with('success', 'Product berhasil dihapus');
+    }
+
     public function createOrder(Request $request)
     {
         /** @var \App\Models\User $user */
         $user = Auth::user();
-        // dd($request->products);
-        // $products = [];
-        // for ($i = 0; $i < count($request->products); $i++) {
-        //     $products[] = $user->products()->where('product_id', $request->products[$i])->first();
-        //     // Order::create([
-        //     //     'user_id' => $user->id,
-        //     //     'total' => $products[$i]->price,
-        //     //     'status' => 'Belum bayar'
-        //     // ]);
-        // }
-        Order::create([
-            'user_id' => $user->id,
-            'products' => $request->products,
-            'status' => 'Belum bayar'
+
+        $order = $user->orders()->create([
+            'total' => $request->total,
+            'status' => 'Belum bayar.'
         ]);
-        return redirect()->back()->with(['success' => 'Order berhasil dibuat!', 'message' => $request->products]);
+        foreach ($request->products as $products) {
+            $user->products()->detach($products['id']);
+            $order->products()->attach($products['id'], [
+                'quantity' => $products['quantity']
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Order berhasil dibuat!');
     }
 
     public function logout(Request $request)

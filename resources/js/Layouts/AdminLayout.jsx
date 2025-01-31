@@ -61,7 +61,7 @@ const AdminLayout = ({children}) => {
                         }
                     </div>
                 </nav>
-                <main className='bg-white col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>
+                <main className='bg-main col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>
                     {children}
                 </main>
             </div>

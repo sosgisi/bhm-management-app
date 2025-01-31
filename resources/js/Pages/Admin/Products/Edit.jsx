@@ -16,34 +16,37 @@ const Edit = ({product}) => {
     })
 
     useEffect(() => {
-        // Check if `product.image` exists and is a valid string
-        if (typeof product.image === "string" && product.image.trim() !== "") {
-            console.log("Fetching image from URL:", product.image)
-            fetch(product.image)
-                .then((response) => {
-                    if (!response.ok) {
-                        throw new Error(`Failed to fetch image. Status: ${response.status}`)
-                    }
-                    return response.blob()
-                })
-                .then((blob) => {
-                    if (blob) {
-                        console.log("Blob fetched successfully:", blob)
-                        const file = new File([blob], "current-image.jpg", {
-                            type: blob.type || "image/jpeg",
-                        })
-                        setData("image", file) // Set the file for the form
-                        setPreview(URL.createObjectURL(file)) // Preview the image
-                    } else {
-                        console.error("Blob is undefined.")
-                    }
-                })
-                .catch((error) => {
-                    console.error("Error fetching or processing the image:", error)
-                })
-        } else {
-            console.warn("Invalid or missing `product.image` URL.")
-        }
+        setData('image', product.image)
+        setPreview(product.image)
+
+        // // Check if `product.image` exists and is a valid string
+        // if (typeof product.image === "string" && product.image.trim() !== "") {
+        //     console.log("Fetching image from URL:", product.image)
+        //     fetch(product.image)
+        //         .then((response) => {
+        //             if (!response.ok) {
+        //                 throw new Error(`Failed to fetch image. Status: ${response.status}`)
+        //             }
+        //             return response.blob()
+        //         })
+        //         .then((blob) => {
+        //             if (blob) {
+        //                 console.log("Blob fetched successfully:", blob)
+        //                 const file = new File([blob], "current-image.jpg", {
+        //                     type: blob.type || "image/jpeg",
+        //                 })
+        //                 setData("image", file) // Set the file for the form
+        //                 setPreview(URL.createObjectURL(file)) // Preview the image
+        //             } else {
+        //                 console.error("Blob is undefined.")
+        //             }
+        //         })
+        //         .catch((error) => {
+        //             console.error("Error fetching or processing the image:", error)
+        //         })
+        // } else {
+        //     console.warn("Invalid or missing `product.image` URL.")
+        // }
     }, [product.image])
 
     const handleUpdate = (e) => {
@@ -103,7 +106,7 @@ const Edit = ({product}) => {
                         {
                             preview && 
                             <div className="flex justify-center items-center">
-                                <img src={preview} alt="Preview" className="h-36" />
+                                <img src={`/storage/${preview}`} alt="Preview" className="h-36" />
                             </div>
                         }
                     </div>
