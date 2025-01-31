@@ -26,13 +26,8 @@ class Product extends Model
             ->withTimestamps();
     }
 
-    // public function admin()
-    // {
-    //     return $this->belongsTo(Admin::class);
-    // }
-
-    // public function cart()
-    // {
-    //     return $this->belongsTo(Cart::class);
-    // }
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class);
+    }
 }

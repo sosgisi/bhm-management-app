@@ -1,11 +1,29 @@
 import UserLayout from "../../Layouts/UserLayout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons"
-import { router } from "@inertiajs/react"
+import { router, usePage } from "@inertiajs/react"
+import { useEffect, useRef, useState } from "react"
 
 const Cart = ({products}) => {
 
-    console.log(products)
+    const { flash } = usePage().props
+    const [checkedProducts, setCheckedProducts] = useState([])
+
+    const handleProductChecked = (e, index) => {
+        const value = e.target.value
+        const checked = e.target.checked
+        console.log('product ', products[index])
+        console.log('checked ', checked)
+        if(checked){
+            setCheckedProducts((prevProducts) => [...prevProducts, products[index]])
+        }else{
+            setCheckedProducts((prevProducts) => prevProducts.filter((item) => item.id !== products[index].id))
+        }
+    }
+
+    useEffect(() => {
+        console.log('checkedProducts ', checkedProducts)
+    }, [checkedProducts])
 
     const handlePlusChange = (e, productId, quantity) => {
         e.preventDefault()
@@ -27,6 +45,13 @@ const Cart = ({products}) => {
         })
     }
 
+    const handleOrder = (e) => {
+        e.preventDefault()
+        router.post('/user/orders', {
+            products: checkedProducts,
+        })
+    }
+
     return(
         <UserLayout>
             <div className='px-8 py-5 flex justify-between items-center'>
@@ -36,10 +61,11 @@ const Cart = ({products}) => {
                 <input type="text" placeholder="Cari" className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:border-black border shadow bg-gray-300" />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute top-3 left-3 text-gray-400"/>
             </div>
-            <div className="p-8">
+            <div className="p-8 flex flex-col items-end gap-10">
                 <table className="rounded shadow-xl w-full text-center">
                     <thead className="bg-gray-300 font-bold text-gray-800">
                         <tr>
+                            <th></th>
                             <th className="py-1 px-3">Foto</th>
                             <th>Produk</th>
                             <th>Harga</th>
@@ -52,6 +78,7 @@ const Cart = ({products}) => {
                         {
                             products.map((product, i) => (
                                 <tr key={i}>
+                                    <td className="p-3"><input type="checkbox" value={product.id} onChange={(e) => handleProductChecked(e, i)} /></td>
                                     <td className="p-3 flex justify-center items-center"><img src={product.image} alt="" className="h-7"/></td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
@@ -69,6 +96,7 @@ const Cart = ({products}) => {
                         }
                     </tbody>
                 </table>
+                <button onClick={handleOrder} className="py-1 pr-24 pl-3 text-white font-bold bg-green-button rounded-lg shadow-lg hover:bg-green-button-darker transform duration-200">Pesan</button>
             </div>
         </UserLayout>
     )

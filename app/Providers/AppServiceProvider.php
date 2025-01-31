@@ -41,15 +41,5 @@ class AppServiceProvider extends ServiceProvider
                     : (object) [];
             },
         ]);
-
-        // Inertia::share([
-        //     'auth' => function (Request $request) {
-        //         return [
-        //             'user' => $request->user()
-        //                 ? [$request->user()->only('id', 'name', 'email', 'role')]
-        //                 : null,
-        //         ];
-        //     }
-        // ]);
     }
 }

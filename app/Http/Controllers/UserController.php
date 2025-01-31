@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\Order;
 use App\Models\Product;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -108,6 +109,28 @@ class UserController extends Controller
         ]);
 
         return redirect()->back();
+    }
+
+    public function createOrder(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = Auth::user();
+        // dd($request->products);
+        // $products = [];
+        // for ($i = 0; $i < count($request->products); $i++) {
+        //     $products[] = $user->products()->where('product_id', $request->products[$i])->first();
+        //     // Order::create([
+        //     //     'user_id' => $user->id,
+        //     //     'total' => $products[$i]->price,
+        //     //     'status' => 'Belum bayar'
+        //     // ]);
+        // }
+        Order::create([
+            'user_id' => $user->id,
+            'products' => $request->products,
+            'status' => 'Belum bayar'
+        ]);
+        return redirect()->back()->with(['success' => 'Order berhasil dibuat!', 'message' => $request->products]);
     }
 
     public function logout(Request $request)

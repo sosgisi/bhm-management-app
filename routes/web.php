@@ -52,5 +52,6 @@ Route::middleware(['auth', 'isUser'])->group(function () {
 
     Route::post('/user/products/{product}', [UserController::class, 'addProduct'])->name('user.product.add');
     Route::put('/user/products/{product}', [UserController::class, 'updateProduct'])->name('user.product.update');
+    Route::post('/user/orders', [UserController::class, 'createOrder'])->name('user.order.create');
     Route::post('/user/logout', [UserController::class, 'logout'])->name('user.logout');
 });
