@@ -23,6 +23,8 @@ export default {
                 'gray-button-darker': '#2E2E2E',
                 'green-button-darker': '#436031',
                 'red-button-darker': '#603131',
+                'yellow-button': '#767A45',
+                'yellow-button-darker': '#5B5F1F',
                 'green-area': '#A5F996',
                 'red-area': '#F9AF96',
                 'gray-area': '#8F8F8F',

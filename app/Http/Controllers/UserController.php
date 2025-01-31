@@ -26,9 +26,13 @@ class UserController extends Controller
         $cart = $user->products()->get();
         $cartTotal = $cart->count();
 
+        $order = $user->orders()->get();
+        $orderTotal = $order->count();
+
         return Inertia::render('User/Dashboard', [
             'productsTotal' => $productsTotal,
-            'cartTotal' => $cartTotal
+            'cartTotal' => $cartTotal,
+            'orderTotal' => $orderTotal
         ]);
     }
     public function products()
@@ -68,6 +72,15 @@ class UserController extends Controller
         return Inertia::render('User/DetailedOrder', [
             'order' => $order
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
     }
 
     public function addProduct(Request $request, $productId)
@@ -130,15 +143,15 @@ class UserController extends Controller
             ]);
         }
 
-        return redirect()->back()->with('success', 'Order berhasil dibuat!');
+        return redirect()->back()->with('success', 'Order berhasil dibuat');
     }
 
-    public function logout(Request $request)
+    public function destroyOrder($orderId)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $user = Auth::user();
+        /** @var \App\Models\User $user */
+        $order = $user->orders()->delete($orderId);
 
-        return redirect()->route('login');
+        return redirect()->route('user.orders')->with('success', 'Order berhasil dihapus');
     }
 }

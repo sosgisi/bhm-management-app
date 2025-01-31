@@ -49,11 +49,14 @@ Route::middleware(['auth', 'isUser'])->group(function () {
     Route::get('/user/cart', [UserController::class, 'cart'])->name('user.cart');
     Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders');
     Route::get('/user/orders/{order}', [Usercontroller::class, 'detailedOrder'])->name('user.orders.detail');
-    // Route::get('/user/settings', [UserController::class, 'settings'])->name('user.settings');
+    Route::post('/user/logout', [UserController::class, 'logout'])->name('user.logout');
 
+    // cart CRUD
     Route::post('/user/products/{product}', [UserController::class, 'addProduct'])->name('user.product.add');
     Route::put('/user/products/{product}', [UserController::class, 'updateProduct'])->name('user.product.update');
     Route::delete('/user/products/{product}', [UserController::class, 'destroyProduct'])->name('user.product.destroy');
+
+    // order CRUD
     Route::post('/user/orders', [UserController::class, 'createOrder'])->name('user.order.create');
-    Route::post('/user/logout', [UserController::class, 'logout'])->name('user.logout');
+    Route::delete('/user/orders/{order}', [UserController::class, 'destroyOrder'])->name('user.order.destroy');
 });

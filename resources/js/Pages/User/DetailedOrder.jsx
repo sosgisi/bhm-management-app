@@ -1,17 +1,25 @@
+import { router } from "@inertiajs/react"
 import UserLayout from "../../Layouts/UserLayout"
 
 const DetailedOrder = ({order}) => {
 
     console.log(order)
 
+    const handleDeleteOrder = (e) => {
+        e.preventDefault()
+        router.post(`/user/orders/${order.id}`, {
+            _method: "delete"
+        })
+    }
+
     return (
         <UserLayout>
             <h1 className="text-3xl font-bold px-8 py-5">Detailed Order #{order.id}</h1>
-            <div className="p-8 flex flex-col">
+            <div className="p-8 flex flex-col gap-10">
                 <table className="rounded shadow-xl w-full text-center">
                     <thead className="bg-gray-300 font-bold text-gray-800">
                         <tr>
-                            <th></th>
+                            <th>Foto</th>
                             <th className="py-1 px-3">Produk</th>
                             <th>Harga</th>
                             <th>Jumlah</th>
@@ -33,16 +41,25 @@ const DetailedOrder = ({order}) => {
                     </tbody>
                 </table>
                 <div className="flex justify-between">
-                    <button>Batalkan pesanan</button>
                     <div>
-                        <h1>Total: <span>{order.total}</span></h1>
-                        <div className="flex">
-                            <h1>Status: <span>{order.status}</span></h1>
-                            {
-                                order.status === 'Belum bayar.'
-                                && <button>Bayar</button>
-                            }
+                        <button onClick={handleDeleteOrder} className="bg-red-button rounded-lg shadow-lg hover:bg-red-button-darker text-white text-start font-medium py-1 px-5 transform duration-200">Batalkan pesanan</button>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        <div className="flex justify-between gap-10">
+                            <h1 className="font-bold text-xl">Total: </h1>
+                            <p className="font-bold text-xl bg-gray-300 py-1 px-5 rounded-sm">Rp. <span className="font-medium text-md">{order.total}</span></p>
                         </div>
+                        <div className="flex justify-between gap-10">
+                            <h1 className="font-bold text-xl">Status: </h1>
+                            <p className={`${order.status === 'Belum bayar.' ? 'text-red-500' : ''} font-medium text-xl`}>{order.status}</p>
+                        </div>
+                        {
+                            order.status === 'Belum bayar.'
+                            && 
+                            <div className="flex justify-end">
+                                <button className="bg-yellow-button rounded-lg shadow-lg hover:bg-yellow-button-darker text-white text-start font-medium px-8 transform duration-200">Bayar</button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>

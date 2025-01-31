@@ -1,7 +1,7 @@
 import { Link } from "@inertiajs/react"
 import UserLayout from "../../Layouts/UserLayout"
 
-const Dashboard = ({productsTotal, cartTotal}) => {
+const Dashboard = ({productsTotal, cartTotal, orderTotal}) => {
 
     return(
         <UserLayout>
@@ -28,9 +28,9 @@ const Dashboard = ({productsTotal, cartTotal}) => {
                 <Link href="/user/orders" className='flex flex-col justify-between gap-8 border px-3 py-2 shadow-xl hover:scale-105 transform duration-150 rounded-tl rounded-tr border-b-4 border-b-yellow-500 hover:bg-gray-100'>
                     <h1 className='text-2xl font-medium'>Pesanan saya</h1>
                     <div className="flex justify-end">
-                        <p className='text-sm font-extralight text-end'>
-                            status
-                            <span className='text-lg font-bold ml-2 underline'>Pengecekan</span>
+                        <p>
+                            Total 
+                            <span className='text-4xl font-bold ml-2'>{orderTotal}</span>
                         </p>
                     </div>
                 </Link>
