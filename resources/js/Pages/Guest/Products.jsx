@@ -2,10 +2,17 @@ import GuestLayout from "../../Layouts/GuestLayout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faCirclePlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons"
 import { useState } from "react"
+import { router } from "@inertiajs/react"
 
 const Products = ({products}) => {
 
-    const [sumOfItem, setSumOfItem] = useState(1)
+    // const [sumOfItem, setSumOfItem] = useState(1)
+    const handleDetailedProduct = (e, productId) => {
+        e.preventDefault()
+        router.post(`/guest/products/${productId}`, {
+            _method: "get"
+        })
+    }
 
     return(
         <GuestLayout>
@@ -34,7 +41,7 @@ const Products = ({products}) => {
                             products.map((product, i) => (
                                 <tr key={i}>
                                     <td className="p-3 flex justify-center items-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
-                                    <td className="hover:underline cursor-pointer">{product.name}</td>
+                                    <td onClick={(e) => handleDetailedProduct(e, product.id)} className="hover:underline cursor-pointer">{product.name}</td>
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>
                                     <td>{product.quantity}</td>

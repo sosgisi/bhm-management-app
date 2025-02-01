@@ -62,17 +62,7 @@ class ProductsController extends Controller
     }
     public function productEdit(Product $product)
     {
-        $newProduct = [
-            'id' => $product->id,
-            'name' => $product->name,
-            'description' => $product->description,
-            'image' => Storage::url($product->image),
-            'price' => $product->price,
-            'unit' => $product->unit,
-            'quantity' => $product->quantity,
-            'category' => $product->category,
-        ];
-        return Inertia::render('Admin/Products/Edit', ['product' => $newProduct]);
+        return Inertia::render('Admin/Products/Edit', ['product' => $product]);
     }
     public function productUpdate(Request $request, Product $product)
     {

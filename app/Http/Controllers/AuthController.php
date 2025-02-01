@@ -9,28 +9,14 @@ use Inertia\Inertia;
 
 class AuthController extends Controller
 {
-    public function guestDashboard()
-    {
-        $products = Product::all();
-        $productsTotal = $products->count();
-        return Inertia::render('Guest/Dashboard', [
-            'productsTotal' => $productsTotal
-        ]);
-    }
-
-    public function guestProducts()
-    {
-        return Inertia::render('Guest/Products');
-    }
-
-    public function guestCart()
-    {
-        return Inertia::render('Guest/Cart');
-    }
-
     public function showLoginForm()
     {
         return Inertia::render('Auth/Login');
+    }
+
+    public function showRegisterForm()
+    {
+        return Inertia::render('Auth/Register');
     }
 
     public function login(Request $request)
@@ -52,12 +38,6 @@ class AuthController extends Controller
         }
 
         return redirect()->back()->with('message', 'Invalid Credentials');
-        // return back()->withErrors(['errors', 'Invalid Credentials']);
-    }
-
-    public function showRegisterForm()
-    {
-        return Inertia::render('Auth/Register');
     }
 
     public function register()
@@ -67,7 +47,7 @@ class AuthController extends Controller
 
     public function showForgotPasswordForm()
     {
-        return Inertia::render('Auth/ForgotPassword');
+        //
     }
 
     public function sendResetLink()

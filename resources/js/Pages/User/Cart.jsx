@@ -40,7 +40,7 @@ const Cart = ({products}) => {
     const handleOrder = (e) => {
         e.preventDefault()
         let total = 0
-        const temp = checkedProducts.map((product) => {
+        checkedProducts.map((product) => {
             total += product.total
         })
         router.post('/user/orders', {

@@ -2,7 +2,7 @@ import UserLayout from "../../Layouts/UserLayout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faMagnifyingGlass, faCircleMinus, faCirclePlus, faCartPlus } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
-import { useForm, usePage } from "@inertiajs/react"
+import { router, useForm } from "@inertiajs/react"
 
 const Products = ({products}) => {
     
@@ -43,6 +43,13 @@ const Products = ({products}) => {
         setData('quantity', tempAmount[i]-1)
     }
 
+    const handleDetailedProduct = (e, productId) => {
+        e.preventDefault()
+        router.post(`/user/products/${productId}`, {
+            _method: "get"
+        })
+    }
+
     return(
         <UserLayout>
             <div className='px-8 py-5 flex justify-between items-center'>
@@ -71,7 +78,7 @@ const Products = ({products}) => {
                             products.map((product, i) => (
                                 <tr key={i}>
                                     <td className="p-3 flex justify-center items-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
-                                    <td className="hover:underline cursor-pointer">{product.name}</td>
+                                    <td onClick={(e) => handleDetailedProduct(e, product.id)} className="hover:underline cursor-pointer">{product.name}</td>
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>
                                     <td>{product.quantity}</td>

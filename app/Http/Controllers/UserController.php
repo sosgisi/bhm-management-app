@@ -57,10 +57,17 @@ class UserController extends Controller
     {
         $user = Auth::user();
         /** @var \App\Models\User $user */
-        $orders = $user->orders()->with('products')->get();
+        $orders = $user->orders()->with('products')->latest()->get();
 
         return Inertia::render('User/Orders', [
             'orders' => $orders
+        ]);
+    }
+
+    public function detailedProduct(Product $product)
+    {
+        return Inertia::render('User/DetailedProduct', [
+            'product' => $product
         ]);
     }
 

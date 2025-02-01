@@ -1,7 +1,10 @@
 import AdminLayout from '../../Layouts/AdminLayout'
 import { Link } from '@inertiajs/react'
 
-const Dashboard = () => {
+const Dashboard = ({productTotal, orderTotal}) => {
+
+    console.log('productTotal ', productTotal)
+    console.log('orderTotal ', orderTotal)
 
     return (
         <AdminLayout>
@@ -12,11 +15,11 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center p'>
                         <p className='text-sm font-extralight'>
                             Total
-                            <span className='text-3xl font-bold ml-2'>102</span>
+                            <span className='text-3xl font-bold ml-2'>{productTotal}</span>
                         </p>
                         <p className='text-sm font-extralight'>
                             stok habis
-                            <span className='text-3xl font-bold ml-2'>7</span>
+                            <span className='text-3xl font-bold ml-2'>NaN</span>
                         </p>
                     </div>
                 </Link>
@@ -25,11 +28,11 @@ const Dashboard = () => {
                     <div className='flex justify-between items-center p'>
                         <p className='text-sm font-extralight'>
                             Total
-                            <span className='text-3xl font-bold ml-2'>32</span>
+                            <span className='text-3xl font-bold ml-2'>{orderTotal}</span>
                         </p>
                         <p className='text-sm font-extralight'>
                             perlu dikirim
-                            <span className='text-3xl font-bold ml-2'>05</span>
+                            <span className='text-3xl font-bold ml-2'>Nan</span>
                         </p>
                     </div>
                 </Link>
@@ -38,12 +41,12 @@ const Dashboard = () => {
                         <h1 className='text-2xl font-medium'>Pemasukan</h1>
                         <div className='text-sm font-extralight text-end'>
                             <p>Total</p>
-                            <p>Rp. 57.673.540</p>
+                            <p>NaN</p>
                         </div>
                     </div>
                     <p className='text-sm font-extralight text-end'>
                         hari ini
-                        <span className='text-xl font-bold ml-2'>Rp. 3.203.500</span>
+                        <span className='text-xl font-bold ml-2'>NaN</span>
                     </p>
                 </Link>
             </div>

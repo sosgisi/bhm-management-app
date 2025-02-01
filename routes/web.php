@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
@@ -11,9 +12,9 @@ Route::redirect('/', '/guest/dashboard');
 
 // Guest routes group
 Route::middleware('guest')->group(function () {
-    Route::get('/guest/dashboard', [AuthController::class, 'guestDashboard'])->name('guest.dashboard');
+    Route::get('/guest/dashboard', [GuestController::class, 'dashboard'])->name('guest.dashboard');
     Route::get('/guest/products', [ProductsController::class, 'products'])->name('guest.products');
-    Route::get('/guest/cart', [AuthController::class, 'guestCart'])->name('guest.cart');
+    Route::get('/guest/products/{product}', [GuestController::class, 'detailedProduct'])->name('guest.products.detail');
 
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login'])->name('login.post');
@@ -31,6 +32,7 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::get('/admin/income', [AdminController::class, 'income'])->name('admin.income');
     Route::get('/admin/settings', [AdminController::class, 'settings'])->name('admin.settings');
+    Route::get('/admin/products/{product}', [AdminController::class, 'detailedProduct'])->name('admin.products.detail');
     Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
     // Products Controller
@@ -46,6 +48,7 @@ Route::middleware(['auth', 'isUser'])->group(function () {
     // show pages
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
     Route::get('/user/products', [ProductsController::class, 'products'])->name('user.products');
+    Route::get('/user/products/{product}', [UserController::class, 'detailedProduct'])->name('user.products.detail');
     Route::get('/user/cart', [UserController::class, 'cart'])->name('user.cart');
     Route::get('/user/orders', [UserController::class, 'orders'])->name('user.orders');
     Route::get('/user/orders/{order}', [Usercontroller::class, 'detailedOrder'])->name('user.orders.detail');

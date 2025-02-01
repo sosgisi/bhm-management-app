@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -10,7 +12,12 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
-        return Inertia::render('Admin/Dashboard');
+        $productTotal = Product::count();
+        $orderTotal = Order::count();
+        return Inertia::render('Admin/Dashboard', [
+            'productTotal' => $productTotal,
+            'orderTotal' => $orderTotal
+        ]);
     }
 
     public function orders()
@@ -28,7 +35,12 @@ class AdminController extends Controller
         return Inertia::render('Admin/Settings');
     }
 
-    // Product controller
+    public function detailedProduct(Product $product)
+    {
+        return Inertia::render('Admin/Products/Detailed', [
+            'product' => $product
+        ]);
+    }
 
     public function logout(Request $request)
     {
