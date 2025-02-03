@@ -5,6 +5,8 @@ import { useEffect, useState } from "react"
 import { router, useForm } from "@inertiajs/react"
 
 const Products = ({products}) => {
+
+    console.log(products)
     
     const [tempAmount, setTempAmount] = useState(() => new Array(products.length).fill(1))
     const { data, setData, post } = useForm({
@@ -68,7 +70,7 @@ const Products = ({products}) => {
                             <th>Harga</th>
                             <th></th>
                             <th>Kuantitas</th>
-                            <th>Status</th>
+                            {/* <th>Status</th> */}
                             <th>Keranjang</th>
                             <th></th>
                         </tr>
@@ -82,23 +84,27 @@ const Products = ({products}) => {
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>
                                     <td>{product.quantity}</td>
-                                    <td>
+                                    {/* <td>
                                         <div className={`flex justify-center items-center ${product.quantity>0 ? 'bg-green-area' : 'bg-red-area'} rounded-full py-1`}>
                                             { product.quantity > 0 
                                              ? 'in stock'
                                              : 'out of stock'
                                             }
                                         </div>
+                                    </td> */}
+                                    <td>
+                                        {
+                                            product.quantity !== 0 ?
+                                            <div className="flex justify-center items-center mx-3 gap-3">
+                                                <FontAwesomeIcon onClick={(e) => handleMinus(e, i)} icon={faCircleMinus} className={`${tempAmount[i]===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
+                                                <h1 className="text-md">{tempAmount[i]}</h1>
+                                                <FontAwesomeIcon onClick={(e) => handlePlus(e, i)} icon={faCirclePlus} className={`${tempAmount[i]===product.quantity && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
+                                            </div>
+                                            : <p className="bg-red-area rounded-full py-1">stok habis</p>
+                                        }
                                     </td>
                                     <td>
-                                        <div className="flex justify-center items-center mx-3 gap-3">
-                                            <FontAwesomeIcon onClick={(e) => handleMinus(e, i)} icon={faCircleMinus} className={`${tempAmount[i]===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
-                                            <h1 className="text-md">{tempAmount[i]}</h1>
-                                            <FontAwesomeIcon onClick={(e) => handlePlus(e, i)} icon={faCirclePlus} className={`${tempAmount[i]===product.quantity && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <FontAwesomeIcon onClick={(e) => handleAddToCart(e, product.id)} icon={faCartPlus} className="size-7  text-green-button hover:text-green-button-darker cursor-pointer mr-2" />
+                                        <FontAwesomeIcon onClick={(e) => handleAddToCart(e, product.id)} icon={faCartPlus} className={`${product.quantity === 0 && 'pointer-events-none text-gray-area'} size-7 text-green-button hover:text-green-button-darker cursor-pointer mr-2`} />
                                     </td>
                                 </tr>
                             ))

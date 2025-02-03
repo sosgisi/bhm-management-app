@@ -44,14 +44,4 @@ class AuthController extends Controller
     {
         //
     }
-
-    public function showForgotPasswordForm()
-    {
-        //
-    }
-
-    public function sendResetLink()
-    {
-        //
-    }
 }

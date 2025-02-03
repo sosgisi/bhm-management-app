@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from "react"
 const Cart = ({products}) => {
     console.log(products)
 
-    const { flash } = usePage().props
+    const { flash, auth } = usePage().props
     const [checkedProducts, setCheckedProducts] = useState([])
 
     const handleProductChecked = (e, index, quantity) => {
@@ -45,6 +45,7 @@ const Cart = ({products}) => {
         })
         router.post('/user/orders', {
             products: checkedProducts,
+            created_by: auth.user[0].name,
             total: total,
         }, {
             onSuccess: () => {
@@ -126,18 +127,22 @@ const Cart = ({products}) => {
                         {
                             products.map((product, i) => (
                                 <tr key={i}>
-                                    <td className="p-3"><input type="checkbox" onChange={(e) => handleProductChecked(e, i, product.pivot.quantity)} /></td>
+                                    <td className="p-3"><input type="checkbox" disabled={product.quantity===0} onChange={(e) => handleProductChecked(e, i, product.pivot.quantity)} /></td>
                                     <td className="p-3 flex justify-center items-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
                                     <td>{product.name}</td>
                                     <td>{product.price}</td>
                                     <td>{product.quantity}</td>
                                     <td>{product.price * product.pivot.quantity}</td>
                                     <td>
-                                        <div className="flex justify-center items-center mx-3 gap-3">
-                                            <FontAwesomeIcon onClick={(e) => handleMinusChange(e, i, product.id, product.pivot.quantity)} icon={faCircleMinus} className={`${product.pivot.quantity===0 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
-                                            <h1 className="text-md">{product.pivot.quantity}</h1>
-                                            <FontAwesomeIcon onClick={(e) => handlePlusChange(e, i, product.id, product.pivot.quantity)} icon={faCirclePlus} className={`${product.pivot.quantity===product.quantity && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
-                                        </div>
+                                        {
+                                            product.quantity !== 0 ?
+                                            <div className="flex justify-center items-center mx-3 gap-3">
+                                                <FontAwesomeIcon onClick={(e) => handleMinusChange(e, i, product.id, product.pivot.quantity)} icon={faCircleMinus} className={`${product.pivot.quantity===0 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
+                                                <h1 className="text-md">{product.pivot.quantity}</h1>
+                                                <FontAwesomeIcon onClick={(e) => handlePlusChange(e, i, product.id, product.pivot.quantity)} icon={faCirclePlus} className={`${product.pivot.quantity===product.quantity && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
+                                            </div>
+                                            : <p className="bg-red-area rounded-full py-1">stok habis</p>
+                                        }
                                     </td>
                                 </tr>
                             ))

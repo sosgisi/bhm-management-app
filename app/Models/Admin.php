@@ -16,4 +16,9 @@ class Admin extends Model
     {
         return $this->hasMany(Product::class);
     }
+
+    public function incomes()
+    {
+        return $this->hasMany(Income::class);
+    }
 }

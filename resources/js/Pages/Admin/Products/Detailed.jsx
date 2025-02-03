@@ -5,7 +5,7 @@ const Detailed = ({product}) => {
 
     console.log(product)
 
-    const handleProductDelete = (e) => {
+    const handleDelete = (e) => {
         e.preventDefault()
         router.post(`/admin/products/${product.id}`, {
             _method: "delete"
@@ -42,9 +42,9 @@ const Detailed = ({product}) => {
                     </p>
                 </div>
             </div>
-            <div className="absolute right-10 bottom-10">
-                <Link onClick={handleProductDelete}>Delete</Link>
-                <Link href={`/user/products/${product.id}/edit`}>Edit</Link>
+            <div className="absolute right-10 bottom-10 flex gap-5">
+                <button onClick={(e) => handleDelete(e, product.id)} className="bg-red-button text-white font-bold py-1 px-10 hover:bg-red-button-darker rounded-lg shadow-lg">Delete</button>
+                <Link href={`/admin/products/${product.id}/edit`} className="bg-gray-button text-white font-bold py-1 px-10 hover:bg-gray-button-darker rounded-lg shadow-lg">Edit</Link>
             </div>
         </AdminLayout>
     )

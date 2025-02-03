@@ -1,19 +1,36 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
-import { useForm } from "@inertiajs/react"
+import { Link, useForm } from "@inertiajs/react"
 import { useEffect, useState } from "react"
 
 const Create = () => {
 
     const [preview, setPreview] = useState()
+    const [customUnit, setCustomUnit] = useState(""); // State for custom unit
+    const [isCustomUnit, setIsCustomUnit] = useState(false);
     const {data, setData, post, processing, errors} = useForm({
-        name: '',
-        description: '',
-        price: 0,
-        unit: '', 
-        image: '',
-        quantity: 0,
-        category: 'Produk',
+        name: null,
+        description: null,
+        price: null,
+        unit: null,
+        image: null,
+        quantity: null,
+        category: null,
     })
+
+    const handleUnitChange = (e) => {
+        const selectedValue = e.target.value;
+        setData("unit", selectedValue);
+        setIsCustomUnit(selectedValue === "custom");
+
+        if (selectedValue !== "custom") {
+            setCustomUnit(""); // Clear custom input if predefined is selected
+        }
+    };
+
+    const handleCustomUnitChange = (e) => {
+        setCustomUnit(e.target.value);
+        setData("unit", e.target.value); // Update the form data with the custom unit
+    };
 
     const handleFileChange = (e) => {
         e.preventDefault()
@@ -46,19 +63,31 @@ const Create = () => {
                         <label className="font-medium text-lg">Harga</label>
                         <label className="font-medium text-md">Satuan</label>
                     </div>
-                    <div className="flex justify-between gap-5 mb-5">
-                        <input value={data.price} onChange={(e) => setData('price', e.target.value)} type="number" className="w-full bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3"/>
-                        <div className="flex gap-3">
+                    <div className="flex justify-between gap-2 mb-5">
+                        <input value={data.price} onChange={(e) => setData('price', e.target.value)} type="number" className="w-full h-8 bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3"/>
+                        <div className="flex gap-1 items-center">
                             <p className="font-bold">1x</p>
-                            <select value={data.unit} onChange={(e) => setData('unit', e.target.value)} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2">
-                                <option value=""></option>
-                                <option value="pcs">pcs</option>
-                                <option value="kg">kg</option>
-                                <option value="cm">cm</option>
-                                <option value="m">m</option>
-                                <option value="gram">gram</option>
-                                <option value="sak">sak</option>
-                            </select>
+                            <div className="flex flex-col gap-1 w-24">
+                                <select value={data.unit} onChange={handleUnitChange} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2">
+                                    <option value=""></option>
+                                    <option value="pcs">pcs</option>
+                                    <option value="kg">kg</option>
+                                    <option value="cm">cm</option>
+                                    <option value="m">m</option>
+                                    <option value="gram">gram</option>
+                                    <option value="sak">sak</option>
+                                    <option value="custom">Lainnya</option>
+                                </select>
+                                {isCustomUnit && (
+                                    <input
+                                        type="text"
+                                        value={customUnit}
+                                        onChange={handleCustomUnitChange}
+                                        placeholder="Satuan lainnya"
+                                        className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2"
+                                    />
+                                )}
+                            </div>
                         </div>
                     </div>
                     <label className="font-medium text-lg">Kuantitas</label>
@@ -85,14 +114,14 @@ const Create = () => {
                         <label className="font-medium text-lg">Kategory: </label>
                         <select value={data.category} onChange={(e) => setData('category', e.target.value)} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 w-40 py-1 px-2">
                             <option value="Produk">Barang (default)</option>
-                            <option value="Semen">Semen</option>
+                            <option value="Pipa">Pipa</option>
                             <option value="Kayu">Kayu</option>
                             <option value="Cat">Cat</option>
                             <option value="Besi">Besi</option>
                         </select>
                     </div>
                     <div className="flex justify-end gap-5">
-                        <button className="bg-red-button hover:bg-red-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Batal</button>
+                        <Link href="/admin/products" className="bg-red-button hover:bg-red-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Batal</Link>
                         <button className="bg-green-button hover:bg-green-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Simpan</button>
                     </div>
                 </div>

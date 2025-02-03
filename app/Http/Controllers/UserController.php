@@ -35,10 +35,19 @@ class UserController extends Controller
             'orderTotal' => $orderTotal
         ]);
     }
+
     public function products()
     {
         return Inertia::render('User/Products');
     }
+
+    public function detailedProduct(Product $product)
+    {
+        return Inertia::render('User/DetailedProduct', [
+            'product' => $product
+        ]);
+    }
+
     public function cart()
     {
         $user = Auth::user();
@@ -61,13 +70,6 @@ class UserController extends Controller
 
         return Inertia::render('User/Orders', [
             'orders' => $orders
-        ]);
-    }
-
-    public function detailedProduct(Product $product)
-    {
-        return Inertia::render('User/DetailedProduct', [
-            'product' => $product
         ]);
     }
 
@@ -107,7 +109,7 @@ class UserController extends Controller
             $user->products()->attach($productId, ['quantity' => $quantity]);
         }
 
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang');
+        return redirect()->back()->with('success', 'Produk ditambahkan ke keranjang.');
     }
 
     public function updateProduct(Request $request, $productId)
@@ -131,7 +133,7 @@ class UserController extends Controller
         $user = Auth::user();
         /** @var \App\Models\User $user */
         $user->products()->detach($productId);
-        return redirect()->back()->with('success', 'Product berhasil dihapus');
+        return redirect()->back()->with('success', 'Product berhasil dihapus.');
     }
 
     public function createOrder(Request $request)
@@ -140,6 +142,7 @@ class UserController extends Controller
         $user = Auth::user();
 
         $order = $user->orders()->create([
+            'created_by' => $request->created_by,
             'total' => $request->total,
             'status' => 'Belum bayar.'
         ]);

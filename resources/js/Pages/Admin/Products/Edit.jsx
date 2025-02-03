@@ -16,37 +16,7 @@ const Edit = ({product}) => {
     })
 
     useEffect(() => {
-        setData('image', product.image)
-        setPreview(product.image)
-
-        // // Check if `product.image` exists and is a valid string
-        // if (typeof product.image === "string" && product.image.trim() !== "") {
-        //     console.log("Fetching image from URL:", product.image)
-        //     fetch(product.image)
-        //         .then((response) => {
-        //             if (!response.ok) {
-        //                 throw new Error(`Failed to fetch image. Status: ${response.status}`)
-        //             }
-        //             return response.blob()
-        //         })
-        //         .then((blob) => {
-        //             if (blob) {
-        //                 console.log("Blob fetched successfully:", blob)
-        //                 const file = new File([blob], "current-image.jpg", {
-        //                     type: blob.type || "image/jpeg",
-        //                 })
-        //                 setData("image", file) // Set the file for the form
-        //                 setPreview(URL.createObjectURL(file)) // Preview the image
-        //             } else {
-        //                 console.error("Blob is undefined.")
-        //             }
-        //         })
-        //         .catch((error) => {
-        //             console.error("Error fetching or processing the image:", error)
-        //         })
-        // } else {
-        //     console.warn("Invalid or missing `product.image` URL.")
-        // }
+        console.log('data ', data)
     }, [product.image])
 
     const handleUpdate = (e) => {
@@ -76,7 +46,7 @@ const Edit = ({product}) => {
     return(
         <AdminLayout>
             <h1 className="px-8 pt-5 text-3xl font-bold">Edit Produk</h1>
-            <form onSubmit={handleUpdate} className="flex justify-between gap-5 rounded border border-gray-500 my-5 mx-8 p-5">
+            <div onSubmit={handleUpdate} className="flex justify-between gap-5 rounded border border-gray-500 my-5 mx-8 p-5">
                 <div className="flex flex-col gap-2 w-1/2">
                     <label className="font-medium text-lg">Nama</label>
                     <input value={data.name} onChange={(e) => setData('name', e.target.value)} type="text" className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3 mb-5"/>
@@ -130,11 +100,11 @@ const Edit = ({product}) => {
                         </select>
                     </div>
                     <div className="flex justify-end gap-5">
-                        <Link href={route('admin.products')} className="bg-red-button hover:bg-red-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Batal</Link>
-                        <button className="bg-green-button hover:bg-green-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Simpan</button>
+                        <Link href="/admin/products" className="bg-red-button hover:bg-red-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Batal</Link>
+                        <button onClick={handleUpdate} className="bg-green-button hover:bg-green-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Simpan</button>
                     </div>
                 </div>
-            </form>
+            </div>
         </AdminLayout>
     )
 }

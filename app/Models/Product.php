@@ -20,12 +20,12 @@ class Product extends Model
         'category',
     ];
 
-    protected $appends = ['image_url'];
+    // protected $appends = ['image_url'];
 
-    public function getImageUrlAttribute()
-    {
-        return Storage::url($this->image);
-    }
+    // public function getImageUrlAttribute()
+    // {
+    //     return Storage::url($this->image);
+    // }
 
     public function users()
     {
@@ -37,5 +37,10 @@ class Product extends Model
     public function order()
     {
         return $this->belongsToMany(Order::class)->withPivot('quantity');
+    }
+
+    public function income()
+    {
+        return $this->belongsToMany(Income::class)->withPivot('quantity');
     }
 }

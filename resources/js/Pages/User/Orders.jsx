@@ -12,17 +12,19 @@ const Orders = ({orders}) => {
                 {
                     orders.map((order, i) => (
                         <Link href={`/user/orders/${order.id}`} key={i} className="flex flex-col justify-between h-52 rounded-lg bg-white shadow-lg hover:bg-gray-100 cursor-pointer">
-                            {
-                                order.products.map((product, j) => (
-                                    <div key={j} className="py-1 px-3 flex justify-between">
-                                        <div className="flex gap-3">
-                                            <img src={`/storage/${product.image}`} alt="" className="h-7"/>
-                                            <p>{product.name}</p>
+                            <div className="flex flex-col gap-1">
+                                {
+                                    order.products.map((product, j) => (
+                                        <div key={j} className="py-1 px-3 flex justify-between">
+                                            <div className="flex gap-3">
+                                                <img src={`/storage/${product.image}`} alt="" className="h-7"/>
+                                                <p>{product.name}</p>
+                                            </div>
+                                            <p>{`x ${product.pivot.quantity} ${product.unit}`}</p>
                                         </div>
-                                        <p>{`x ${product.pivot.quantity} ${product.unit}`}</p>
-                                    </div>
-                                ))
-                            }
+                                    ))
+                                }
+                            </div>
                             <div>
                                 <div className="py-1 px-3 flex justify-between border-t border-gray-200">
                                     <h1 className="font-medium">Total :</h1>
@@ -30,7 +32,7 @@ const Orders = ({orders}) => {
                                 </div>
                                 <div className="py-1 px-3 flex justify-between border-t border-gray-200">
                                     <h1 className="font-medium">Status :</h1>
-                                    <h2 className="font-bold">{order.status}</h2>
+                                    <h2 className={`${order.status === 'Belum bayar.' ? 'text-red-500' : ''} font-bold`}>{order.status}</h2>
                                 </div>
                             </div>
                         </Link>

@@ -26,10 +26,12 @@ class ProductsController extends Controller
             'products' => Product::latest()->get()
         ]);
     }
+
     public function productCreate()
     {
         return Inertia::render('Admin/Products/Create');
     }
+
     public function productStore(Request $request)
     {
         $validated = $request->validate([
@@ -41,7 +43,6 @@ class ProductsController extends Controller
             'quantity' => 'integer',
             'category' => 'nullable|string'
         ]);
-
 
         // Upload the image and store it in the 'public/products' directory
         $imagePath = $request->file('image')->store('product-images');
@@ -60,10 +61,12 @@ class ProductsController extends Controller
         // Product::create($validate);
         return redirect()->route('admin.products')->with('success', 'Produk berhasil ditambahkan!');
     }
+
     public function productEdit(Product $product)
     {
         return Inertia::render('Admin/Products/Edit', ['product' => $product]);
     }
+
     public function productUpdate(Request $request, Product $product)
     {
         $validate = $request->validate([
@@ -71,27 +74,22 @@ class ProductsController extends Controller
             'description' => 'string|nullable',
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
-            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'required|string',
             'quantity' => 'integer',
             'category' => 'nullable|string',
         ]);
 
-        // Check if a new image is uploaded
-        if ($request->hasFile('image')) {
-            // Delete the old image if it exists
-            if ($product->image && Storage::disk('public')->exists($product->image)) {
-                Storage::disk('public')->delete($product->image);
-            }
-
-            // Store the new image
-            $validate['image'] = $request->file('image')->store('product-images');
+        if ($product->image !== $request->image) {
+            Storage::disk('public')->delete($product->image);
+            $imagePath = $request->file('image')->store('product-images');
+            $validate['image'] = $imagePath;
         }
 
-        // Update product with validated data
         $product->update($validate);
 
         return redirect()->route('admin.products')->with('success', 'Produk berhasil diperbarui!');
     }
+
     public function productDestroy(Product $product)
     {
         if ($product->image) {

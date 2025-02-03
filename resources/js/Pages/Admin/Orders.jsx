@@ -1,42 +1,49 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import AdminLayout from "../../Layouts/AdminLayout"
 import { Link } from '@inertiajs/react'
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
-const Orders = () => {
+const Orders = ({orders}) => {
+    console.log(orders)
     return(
         <AdminLayout>
             <h1 className="text-3xl font-bold my-5 mx-8">Pesanan - Perlu dikirim</h1>
-            <div className="p-8">
-                <table className="table-auto w-full text-center rounded-xl shadow-xl">
-                    <thead className="bg-gray-300 font-bold text-gray-800">
-                        <tr>
-                            <th className="py-1 px-3">Nama</th>
-                            <th>Pesanan</th>
-                            <th>Total</th>
-                            <th>Status</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className="m-3 flex gap-2 items-center justify-start">
-                                <FontAwesomeIcon icon={faUser}/>
-                                Ahmad
-                            </td>
-                            <td>Cat kuda terbang x5, kuas 3cm x1, lampu x4</td>
-                            <td>Rp. 120.000</td>
-                            <td>
-                                <div className="flex justify-center items-center bg-red-area rounded-full py-1">
-                                    perlu dikirim
+            <div className="p-8 grid grid-cols-2 lg:grid-cols-3 gap-3">
+                {
+                    orders.map((order, i) => (
+                        <Link href={`/admin/orders/${order.id}`} key={i} className="flex flex-col justify-between h-52 rounded-lg bg-white shadow-lg hover:bg-gray-100 cursor-pointer">
+                            <div>
+                                <div className="py-1 px-3 flex justify-center items-center gap-2 border-b border-gray-400">
+                                    <FontAwesomeIcon icon={faUser} className="size-4 bg-gray-400 rounded-full p-1 text-white"/>
+                                    <h1 className="font-medium">{order.user.name}</h1>
                                 </div>
-                            </td>
-                            <td>
-                                <Link className="bg-gray-button rounded text-white py-1 px-4 hover:bg-gray-button-darker">Rincian</Link>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                <div className="flex flex-col gap-1">
+                                    {
+                                        order.products.map((product, j) => (
+                                            <div key={j} className="py-1 px-2 flex justify-between">
+                                                <div className="flex gap-3">
+                                                    <img src={`/storage/${product.image}`} alt="" className="w-8"/>
+                                                    <p>{product.name}</p>
+                                                </div>
+                                                <p>{`x ${product.pivot.quantity} ${product.unit}`}</p>
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            </div>
+                            <div>
+                                <div className="py-1 px-3 flex justify-between border-t border-gray-200">
+                                    <h1 className="font-medium">Total :</h1>
+                                    <h2 className="font-bold">Rp. {order.total}</h2>
+                                </div>
+                                <div className="py-1 px-3 flex justify-between border-t border-gray-200">
+                                    <h1 className="font-medium">Status :</h1>
+                                    <h2 className={`${order.status === 'Belum bayar.' ? 'text-red-500' : ''} font-bold`}>{order.status}</h2>
+                                </div>
+                            </div>
+                        </Link>
+                    ))
+                }
             </div>
         </AdminLayout>
     )
