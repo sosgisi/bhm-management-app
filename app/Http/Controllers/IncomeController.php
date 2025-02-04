@@ -18,18 +18,41 @@ class IncomeController extends Controller
         ]);
     }
 
-    public function todayIncome()
+    public function todayIncome(Request $request)
     {
         $today = Carbon::now()->format('Y-m-d');
-        $income = Income::where('date', $today)->with('products')->first();
+        $search = $request->input('search');
+
+        $income = Income::whereDate('date', $today)
+            ->with(['products' => function ($query) use ($search) {
+                if ($search) {
+                    // Apply search filter to related 'products' table
+                    $query->where('name', 'like', "%{$search}%");
+                }
+            }])->first();
+
+        $totalIncome = 0;
+        $products = $income->products()->get();
+        foreach ($products as $product) {
+            $totalIncome += $product->pivot->quantity * $product->price;
+        }
+        $income->income = $totalIncome;
+        $income->save();
+
         return Inertia::render('Admin/TodayIncome', [
             'income' => $income
         ]);
     }
 
-    public function detailedIncome($incomeId)
+    public function detailedIncome(Request $request, $incomeId)
     {
-        $income = Income::where('id', $incomeId)->with('products')->first();
+        $search = $request->input('search');
+        $income = Income::where('id', $incomeId)
+            ->with(['products' => function ($query) use ($search) {
+                if ($search) {
+                    $query->where('name', 'like', "%{$search}%");
+                }
+            }])->first();
         return Inertia::render('Admin/DetailedIncome', [
             'income' => $income
         ]);
@@ -47,13 +70,9 @@ class IncomeController extends Controller
                 $income->products()->updateExistingPivot($productId, [
                     'quantity' => $newQuantity
                 ]);
-                $income->income = $newQuantity * $existingProduct->price;
-                $income->save();
             } else {
                 $product = Product::find($productId)->first();
                 $income->products()->attach($productId, ['quantity' => $quantity]);
-                $income->income += $quantity * $product->price;
-                $income->save();
             }
         } else {
             $totalIncome = 0;
@@ -68,7 +87,7 @@ class IncomeController extends Controller
             $income->products()->attach($productId, ['quantity' => $quantity]);
         }
 
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan.');
+        return redirect()->back();
     }
 
     public function updateTodayIncomeProduct(Request $request, $productId)
@@ -79,13 +98,6 @@ class IncomeController extends Controller
         $income->products()->updateExistingPivot($productId, [
             'quantity' => $quantity
         ]);
-        $products = $income->products()->get();
-        $newTotal = 0;
-        foreach ($products as $product) {
-            $newTotal += $product->pivot->quantity * $product->price;
-        }
-        $income->income = $newTotal;
-        $income->save();
         return redirect()->back();
     }
 
@@ -93,11 +105,7 @@ class IncomeController extends Controller
     {
         $today = Carbon::now()->format('Y-m-d');
         $income = Income::where('date', $today)->first();
-        $existingProduct = $income->products()->where('product_id', $productId)->first();
-        $currentTotal = $existingProduct->pivot->quantity * $existingProduct->price;
         $income->products()->detach($productId);
-        $income->income -= $currentTotal;
-        $income->save();
-        return redirect()->back()->with('success', 'Produk berhasil dihapus.');
+        return redirect()->back();
     }
 }

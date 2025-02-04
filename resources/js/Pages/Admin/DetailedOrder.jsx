@@ -1,7 +1,15 @@
+import { router } from "@inertiajs/react"
 import AdminLayout from "../../Layouts/AdminLayout"
 
 const DetailedOrder = ({order}) => {
-    console.log(order)
+    
+    const handleDeleteOrder = (e) => {
+        e.preventDefault()
+        router.post(`/admin/orders/${order.id}`, {
+            _method: "delete"
+        })
+    }
+
     return (
         <AdminLayout>
             <h1 className="text-3xl font-bold px-8 py-5">Detailed Order #{order.id}</h1>
@@ -32,7 +40,7 @@ const DetailedOrder = ({order}) => {
                 </table>
                 <div className="flex justify-between">
                     <div>
-                        <button className="bg-red-button rounded-lg shadow-lg hover:bg-red-button-darker text-white text-start font-medium py-1 px-5 transform duration-200">Hapus pesanan</button>
+                        <button onClick={handleDeleteOrder} className="bg-red-button rounded-lg shadow-lg hover:bg-red-button-darker text-white text-start font-medium py-1 px-5 transform duration-200">Hapus pesanan</button>
                     </div>
                     <div className="flex flex-col gap-2">
                         <div className="flex justify-between gap-10">

@@ -14,9 +14,12 @@ class AdminController extends Controller
 {
     public function dashboard()
     {
+        $todayIncome = 0;
         $today = Carbon::now()->format('Y-m-d');
         $income = Income::where('date', $today)->first();
-        $todayIncome = $income->income;
+        if ($income) {
+            $todayIncome += $income->income;
+        }
 
         $incomes = Income::get();
         $totalIncome = 0;
@@ -75,6 +78,12 @@ class AdminController extends Controller
         ]);
     }
 
+    public function deleteOrder(Order $order)
+    {
+        $order->delete();
+        return redirect()->route('admin.orders')->with('success', 'Order berhasil dihapus.');
+    }
+
     public function logout(Request $request)
     {
         Auth::logout();
@@ -85,5 +94,16 @@ class AdminController extends Controller
         $request->session()->regenerateToken();
 
         return redirect()->route('login');
+    }
+
+    public function productSearch(Request $request)
+    {
+        $query = $request->input('query');
+        if ($query) {
+            $products = Product::where('name', "%$query%")->get();
+        }
+        return Inertia::render('Admin/Products/Index', [
+            'products' => $products
+        ]);
     }
 }

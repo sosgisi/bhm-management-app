@@ -12,8 +12,13 @@ use Inertia\Inertia;
 
 class ProductsController extends Controller
 {
-    public function products()
+    public function products(Request $request)
     {
+        $search = $request->input('search');
+        $products = Product::when($search, function ($query, $search) {
+            return $query->where('name', 'like', "%{$search}%");
+        })->latest()->get();
+
         $path = 'Guest/Products';
         if (Auth::check()) {
             if (Auth::user()->role === 'Admin') {
@@ -23,7 +28,7 @@ class ProductsController extends Controller
             }
         }
         return Inertia::render($path, [
-            'products' => Product::latest()->get()
+            'products' => $products
         ]);
     }
 
@@ -58,7 +63,6 @@ class ProductsController extends Controller
             'category' => $validated['category'],
         ]);
 
-        // Product::create($validate);
         return redirect()->route('admin.products')->with('success', 'Produk berhasil ditambahkan!');
     }
 

@@ -1,11 +1,12 @@
 import AdminLayout from "../../Layouts/AdminLayout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass, faCircleMinus, faCirclePlus, faCalendarDays } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faCircleMinus, faCirclePlus } from "@fortawesome/free-solid-svg-icons"
 import { router } from "@inertiajs/react"
+import { useEffect, useState } from "react"
 
 const DetailedIncome = ({income}) => {
 
-    console.log(income)
+    const [search, setSearch] = useState(null)
 
     const handleMinusChange = (e, productId, quantity) => {
         e.preventDefault()
@@ -30,11 +31,24 @@ const DetailedIncome = ({income}) => {
         })
     }
 
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if (search === null) return; // Prevent initial null state from triggering
+    
+            router.get('/admin/incomes/today', 
+                search.trim() !== "" ? { search } : {}, // Fetch all products if search is empty
+                { preserveState: true, replace: true }
+            );
+        }, 300);
+        
+        return () => clearTimeout(delayDebounceFn);
+    }, [search])
+
     return(
         <AdminLayout>
             <h1 className="text-3xl font-bold mx-8 my-5">Pemasukan Hari ini</h1>
             <div className="relative ml-8">
-                <input type="text" placeholder="Cari" className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:border-black border shadow bg-gray-300" />
+                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute top-3 left-3 text-gray-400"/>
             </div>
             <div className="p-8 flex flex-col justify-between gap-10">
@@ -81,9 +95,6 @@ const DetailedIncome = ({income}) => {
                         <h3>Total: </h3>
                         <h3 className="bg-gray-300 px-8 rounded">Rp. {income.income}</h3>
                     </div>
-                    // <div className="flex justify-end items-center gap-5">
-                    //     <button className="bg-green-button text-white font-bold rounded py-1 px-10 hover:bg-green-button-darker">Simpan</button>
-                    // </div>
                 }
             </div>
         </AdminLayout>

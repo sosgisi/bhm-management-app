@@ -1,11 +1,8 @@
 import { router } from "@inertiajs/react"
 import AdminLayout from "../../Layouts/AdminLayout"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const Income = ({incomes}) => {
 
-    console.log(incomes)
-    
     const handleDetailedIncome = (e, incomeId) => {
         e.preventDefault()
         router.post(`/admin/incomes/${incomeId}`, {

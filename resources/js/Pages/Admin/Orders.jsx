@@ -4,10 +4,10 @@ import { Link } from '@inertiajs/react'
 import { faUser } from "@fortawesome/free-solid-svg-icons"
 
 const Orders = ({orders}) => {
-    console.log(orders)
+
     return(
         <AdminLayout>
-            <h1 className="text-3xl font-bold my-5 mx-8">Pesanan - Perlu dikirim</h1>
+            <h1 className="text-3xl font-bold my-5 mx-8">Pesanan</h1>
             <div className="p-8 grid grid-cols-2 lg:grid-cols-3 gap-3">
                 {
                     orders.map((order, i) => (

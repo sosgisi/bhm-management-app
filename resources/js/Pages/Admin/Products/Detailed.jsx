@@ -3,8 +3,6 @@ import AdminLayout from "../../../Layouts/AdminLayout"
 
 const Detailed = ({product}) => {
 
-    console.log(product)
-
     const handleDelete = (e) => {
         e.preventDefault()
         router.post(`/admin/products/${product.id}`, {
@@ -42,9 +40,12 @@ const Detailed = ({product}) => {
                     </p>
                 </div>
             </div>
-            <div className="absolute right-10 bottom-10 flex gap-5">
-                <button onClick={(e) => handleDelete(e, product.id)} className="bg-red-button text-white font-bold py-1 px-10 hover:bg-red-button-darker rounded-lg shadow-lg">Delete</button>
-                <Link href={`/admin/products/${product.id}/edit`} className="bg-gray-button text-white font-bold py-1 px-10 hover:bg-gray-button-darker rounded-lg shadow-lg">Edit</Link>
+            <div className="absolute bottom-10 right-5 left-5 flex justify-between">
+                <Link href="/admin/products" className="py-1 px-10 text-white font-bold rounded-lg shadow-lg bg-gray-button transform duration-200 hover:bg-gray-button-darker">Back</Link>
+                <div className="flex gap-5">
+                    <button onClick={(e) => handleDelete(e, product.id)} className="bg-red-button text-white font-bold py-1 px-10 hover:bg-red-button-darker rounded-lg shadow-lg transform duration-200">Delete</button>
+                    <Link href={`/admin/products/${product.id}/edit`} className="bg-gray-button text-white font-bold py-1 px-10 hover:bg-gray-button-darker rounded-lg shadow-lg transform duration-200">Edit</Link>
+                </div>
             </div>
         </AdminLayout>
     )

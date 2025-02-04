@@ -1,23 +1,16 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
-import { Link, router, useForm, usePage } from '@inertiajs/react'
+import { Link, router, useForm } from '@inertiajs/react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass, faPlusCircle, faCircleMinus, faCirclePlus, faPlusSquare } from "@fortawesome/free-solid-svg-icons"
+import { faMagnifyingGlass, faCircleMinus, faCirclePlus, faPlusSquare } from "@fortawesome/free-solid-svg-icons"
 import { useEffect, useState } from "react"
 
 const Index = ({products}) => {
 
-    console.log(products)
-
+    const [search, setSearch] = useState(null)
     const [tempAmount, setTempAmount] = useState(() => new Array(products.length).fill(1))
-
-    const {flash} = usePage().props
-    const {data, setData, post} = useForm({
-        'quantity' : 1
+    const { setData, post} = useForm({
+        'quantity' : 1,
     })
-
-    useEffect(() => {
-        console.log(flash)
-    }, [flash])
 
     const handleAddProduct = (e, productId) => {
         e.preventDefault()
@@ -56,6 +49,19 @@ const Index = ({products}) => {
         setData('quantity', tempAmount[i]+1)
     }
 
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if (search === null) return; // Prevent initial null state from triggering
+    
+            router.get('/admin/products', 
+                search.trim() !== "" ? { search } : {}, // Fetch all products if search is empty
+                { preserveState: true, replace: true }
+            );
+        }, 300);
+        
+        return () => clearTimeout(delayDebounceFn);
+    }, [search])
+
     return(
         <AdminLayout>
             <div className='px-8 py-5 flex justify-between items-center'>
@@ -63,7 +69,7 @@ const Index = ({products}) => {
                 <Link href='/admin/product/create' className='py-1 px-3 text-white font-bold bg-gray-button rounded-md shadow-lg hover:bg-gray-button-darker transform duration-300'>Tambah produk</Link>
             </div>
             <div className="relative ml-8">
-                <input type="text" placeholder="Cari" className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:border-black border shadow bg-gray-300" />
+                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute top-3 left-3 text-gray-400"/>
             </div>
             <div className="p-8">

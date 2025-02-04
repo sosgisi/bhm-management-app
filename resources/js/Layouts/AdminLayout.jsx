@@ -2,13 +2,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faUser } from '@fortawesome/free-regular-svg-icons'
 import { faFileInvoiceDollar, faBox, faInbox, faHouse, faGear, faCaretDown } from '@fortawesome/free-solid-svg-icons'
 import { Link, useForm, usePage } from '@inertiajs/react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const AdminLayout = ({children}) => {
 
-    const { auth } = usePage().props;
+    const { auth, flash } = usePage().props;
     const { post } = useForm()
     const { url } = usePage()
+    const [notification, setNotification] = useState(null)
 
     const [profileClick, setProfileClick] = useState(false)
 
@@ -20,9 +21,27 @@ const AdminLayout = ({children}) => {
     const isProductRoute = location.pathname.startsWith('/admin/product');
     const isOrderRoute = location.pathname.startsWith('/admin/orders');
     const isIncomeRoute = location.pathname.startsWith('/admin/incomes');
+    const isTodayIncomeRoute = location.pathname.startsWith('/admin/incomes/today');
+
+    useEffect(() => {
+        if (!flash?.success && !flash?.message) return;
+
+        setNotification(flash.success || flash.message);
+
+        const timer = setTimeout(() => {
+            setNotification(null)
+        }, 5000)
+        return () => clearTimeout(timer)
+    }, [])
 
     return(
         <div>
+            {
+                notification && 
+                <div className='absolute bottom-10 right-10 bg-green-600 rounded py-2 px-10 animate-slideInOut'>
+                    <h1 className='text-white font-bold text-md tracking-wide'>{notification}</h1>
+                </div>
+            }
             <div className='grid grid-cols-5 grid-rows-12 h-screen bg-slate-300'>
                 {/* sidebar */}
                 <nav className='p-3 lg:p-5 hidden md:flex flex-col justify-between font-bold lg:text-lg md:text-md bg-sidebar md:row-start-2 row-end-13'>
@@ -52,17 +71,13 @@ const AdminLayout = ({children}) => {
                                     <Link href='/admin/incomes' className={`${url==='/admin/incomes' && 'bg-white pointer-events-none'} flex justify-start items-center pl-10 py-1 mt-3 hover:bg-white rounded transform duration-300`}>
                                         Semua
                                     </Link>
-                                    <Link href='/admin/incomes/today' className={`${url==='/admin/incomes/today' && 'bg-white pointer-events-none'} flex justify-start items-center pl-10 py-1 mt-3 hover:bg-white rounded transform duration-300`}>
+                                    <Link href='/admin/incomes/today' className={`${isTodayIncomeRoute && 'bg-white pointer-events-none'} flex justify-start items-center pl-10 py-1 mt-3 hover:bg-white rounded transform duration-300`}>
                                         Hari ini
                                     </Link>
                                 </div>
                             }
                         </div>
                     </div>
-                    {/* <Link href='/admin/settings' className={`${url==='/admin/settings' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-4 rounded transform duration-300`}>
-                        <FontAwesomeIcon icon={faGear} />
-                        Pengaturan
-                    </Link> */}
                 </nav>
                 {/* navbar */}
                 <nav className='flex justify-between items-center px-5 bg-black text-white col-start-1 col-end-6'>
@@ -80,7 +95,7 @@ const AdminLayout = ({children}) => {
                         }
                     </div>
                 </nav>
-                <main className='bg-main col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>
+                <main className='relative bg-main col-start-1 md:col-start-2 col-end-6 row-start-2 row-end-13'>
                     {children}
                 </main>
             </div>
