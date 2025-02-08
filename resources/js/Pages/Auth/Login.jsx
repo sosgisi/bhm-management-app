@@ -1,7 +1,8 @@
-import { Link, useForm } from "@inertiajs/react"
+import { Link, useForm, usePage } from "@inertiajs/react"
 
 const Login = () => {
 
+    const { flash } = usePage().props
     const {data, setData, post, processing, errors } = useForm({
         name: '',
         password: ''
@@ -28,8 +29,8 @@ const Login = () => {
                     }
                 </div>
                 <div className="flex flex-col items-end gap-5">
-                    {errors?.message && 
-                        <p className="text-red-500">{errors.message}</p>
+                    {flash?.message && 
+                        <p className="text-red-500">{flash.message}</p>
                     }
                     <button disabled={processing} className="text-xl text-white font-bold text-center py-2 bg-green-button rounded shadow-xl w-40 hover:bg-green-button-darker trasnform duration-200">Login</button>
                     <Link href="/guest/dashboard" className="underline cursor-pointer">continue as a guest</Link>
