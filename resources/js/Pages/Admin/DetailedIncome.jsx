@@ -23,18 +23,18 @@ const DetailedIncome = ({income}) => {
 
     return(
         <AdminLayout>
-            <h1 className="text-3xl font-bold mx-8 my-5">Pemasukan tanggal {income.date}</h1>
-            <div className="relative ml-8">
-                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
+            <h1 className="text-xl md:text-3xl font-bold mx-4 md:mx-8 my-5">Pemasukan tanggal {income.date}</h1>
+            <div className="relative ml-4 md:ml-8 mr-4 md:mr-0">
+                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-1 md:py-2 px-4 pl-10 w-full md:w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute top-3 left-3 text-gray-400"/>
             </div>
-            <div className="p-8 flex flex-col justify-between gap-10">
+            <div className="p-4 md:p-8 flex flex-col justify-between gap-10">
                 <table className="table-auto w-full shadow-xl rounded-xl text-center">
                     <thead className="bg-gray-300 font-bold text-gray-800">
                         <tr>
                             <th></th>
                             <th>Produk</th>
-                            <th>Harga</th>
+                            <th className="hidden md:table-cell">Harga</th>
                             <th>Jumlah</th>
                             <th>Total</th>
                         </tr>
@@ -43,9 +43,9 @@ const DetailedIncome = ({income}) => {
                         {
                             income.products.map((product, i) => (
                                 <tr key={i}>
-                                    <td className="p-3 flex items-center justify-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
+                                    <td className="hidden md:table-cell p-3 items-center justify-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
                                     <td>{product.name}</td>
-                                    <td>Rp. {product.price}</td>
+                                    <td className="hidden md:table-cell">Rp. {product.price}</td>
                                     <td>{product.pivot.quantity}</td>
                                     <td>Rp. {product.pivot.quantity * product.price}</td>
                                 </tr>
@@ -53,7 +53,7 @@ const DetailedIncome = ({income}) => {
                         }
                     </tbody>
                 </table>
-                <div className="flex justify-end items-center gap-5 text-xl font-bold">
+                <div className="flex justify-end items-center gap-5 text-md md:text-xl font-bold">
                     <h3>Total: </h3>
                     <h3 className="bg-gray-300 px-8 rounded">Rp. {income.income}</h3>
                 </div>

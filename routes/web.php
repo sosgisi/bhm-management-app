@@ -27,6 +27,7 @@ Route::middleware('guest')->group(function () {
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     // Admin Controller
     Route::get('/admin/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
+    Route::get('/admin/account', [AdminController::class, 'account'])->name('admin.account');
     Route::get('/admin/orders', [AdminController::class, 'orders'])->name('admin.orders');
     Route::get('/admin/orders/{order}', [AdminController::class, 'detailedOrder'])->name('admin.orders.detail');
     Route::delete('/admin/orders/{order}', [AdminController::class, 'deleteOrder'])->name('admin.orders.delete');

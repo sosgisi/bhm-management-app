@@ -10,9 +10,13 @@ use Inertia\Inertia;
 
 class IncomeController extends Controller
 {
-    public function incomes()
+    public function incomes(Request $request)
     {
-        $incomes = Income::with('products')->get();
+        $search = $request->input('search');
+        $incomes = Income::when($search, function ($date, $search) {
+            return $date->where('date', 'like', "%{$search}%");
+        })->latest()->get();
+
         return Inertia::render('Admin/Income', [
             'incomes' => $incomes
         ]);
@@ -32,12 +36,16 @@ class IncomeController extends Controller
             }])->first();
 
         $totalIncome = 0;
-        $products = $income->products()->get();
-        foreach ($products as $product) {
-            $totalIncome += $product->pivot->quantity * $product->price;
+        if ($income) {
+            $products = $income->products()->get();
+            if ($products) {
+                foreach ($products as $product) {
+                    $totalIncome += $product->pivot->quantity * $product->price;
+                }
+            }
+            $income->income = $totalIncome;
+            $income->save();
         }
-        $income->income = $totalIncome;
-        $income->save();
 
         return Inertia::render('Admin/TodayIncome', [
             'income' => $income

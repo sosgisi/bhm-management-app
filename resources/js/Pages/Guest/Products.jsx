@@ -1,12 +1,13 @@
 import GuestLayout from "../../Layouts/GuestLayout"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faMagnifyingGlass, faCirclePlus, faCircleMinus } from "@fortawesome/free-solid-svg-icons"
-import { useState } from "react"
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons"
 import { router } from "@inertiajs/react"
+import { useEffect, useState } from "react"
 
 const Products = ({products}) => {
 
-    // const [sumOfItem, setSumOfItem] = useState(1)
+    const [search, setSearch] = useState(null)
+
     const handleDetailedProduct = (e, productId) => {
         e.preventDefault()
         router.post(`/guest/products/${productId}`, {
@@ -14,16 +15,29 @@ const Products = ({products}) => {
         })
     }
 
+    useEffect(() => {
+        const delayDebounceFn = setTimeout(() => {
+            if (search === null) return; // Prevent initial null state from triggering
+    
+            router.get('/guest/products', 
+                search.trim() !== "" ? { search } : {}, // Fetch all products if search is empty
+                { preserveState: true, replace: true }
+            );
+        }, 300);
+        
+        return () => clearTimeout(delayDebounceFn);
+    }, [search])
+
     return(
         <GuestLayout>
             <div className='px-8 py-5 flex justify-between items-center'>
                 <h1 className='text-3xl font-bold'>Semua Produk</h1>
             </div>
-            <div className="relative ml-8">
-                <input type="text" placeholder="Cari" className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:border-black border shadow bg-gray-300" />
+            <div className="relative ml-4 md:ml-8 mr-4 md:mr-0">
+                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-1 md:py-2 px-4 pl-10 w-full md:w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute top-3 left-3 text-gray-400"/>
             </div>
-            <div className="p-8">
+            <div className="p-4 md:p-8">
                 <table className="rounded shadow-xl w-full text-center">
                     <thead className="bg-gray-300 font-bold text-gray-800">
                         <tr>
@@ -32,8 +46,7 @@ const Products = ({products}) => {
                             <th>Harga</th>
                             <th></th>
                             <th>Kuantitas</th>
-                            <th>Status</th>
-                            <th></th>
+                            <th className="hidden md:table-cell">Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -45,7 +58,7 @@ const Products = ({products}) => {
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>
                                     <td>{product.quantity}</td>
-                                    <td>
+                                    <td className="hidden md:table-cell">
                                         <div className={`flex justify-center items-center ${product.quantity>0 ? 'bg-green-area' : 'bg-red-area'} rounded-full py-1`}>
                                             { product.quantity > 0 
                                              ? 'in stock'

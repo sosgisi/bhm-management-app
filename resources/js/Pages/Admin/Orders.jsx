@@ -7,8 +7,8 @@ const Orders = ({orders}) => {
 
     return(
         <AdminLayout>
-            <h1 className="text-3xl font-bold my-5 mx-8">Pesanan</h1>
-            <div className="p-8 grid grid-cols-2 lg:grid-cols-3 gap-3">
+            <h1 className="text-xl md:text-3xl font-bold my-5 mx-4 md:mx-8">Pesanan</h1>
+            <div className="p-4 md:p-8 grid grid-cols-1 dm:grid-cols-2 lg:grid-cols-3 gap-3">
                 {
                     orders.map((order, i) => (
                         <Link href={`/admin/orders/${order.id}`} key={i} className="flex flex-col justify-between h-52 rounded-lg bg-white shadow-lg hover:bg-gray-100 cursor-pointer">

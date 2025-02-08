@@ -55,6 +55,11 @@ class AdminController extends Controller
         ]);
     }
 
+    public function account()
+    {
+        return Inertia::render('Admin/Account');
+    }
+
     public function detailedProduct(Product $product)
     {
         return Inertia::render('Admin/Products/Detailed', [

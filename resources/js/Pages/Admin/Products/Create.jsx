@@ -52,9 +52,9 @@ const Create = () => {
 
     return(
         <AdminLayout>
-            <h1 className="px-8 pt-5 text-3xl font-bold">Tambah Produk</h1>
-            <form onSubmit={handleCreate} className="flex justify-between gap-5 rounded border border-gray-500 my-5 mx-8 p-5">
-                <div className={`${errors ? 'gap-0' : 'gap-2'} flex flex-col w-1/2`}>
+            <h1 className="px-4 md:px-8 pt-5 text-xl md:text-3xl font-bold">Tambah Produk</h1>
+            <form onSubmit={handleCreate} className="flex flex-col md:flex-row justify-between gap-5 rounded border border-gray-500 my-5 mx-4 md:mx-8 p-5">
+                <div className={`${errors ? 'gap-0' : 'gap-2'} flex flex-col w-full md:w-1/2`}>
                     <label className="font-medium text-lg">Nama</label>
                     <input value={data.name} onChange={(e) => setData('name', e.target.value)} type="text" className={`${errors.name ? 'ring-1 ring-red-500': 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
                     {
@@ -123,7 +123,7 @@ const Create = () => {
                         <input type="file" onChange={handleFileChange} className="w-64"/>
                     </div>
                 </div>
-                <div className="flex flex-col justify-between w-1/2">
+                <div className="flex flex-col gap-5 md:gap-0 justify-between w-full md:w-1/2">
                     <div className="flex flex-col gap-2">
                         <label className="font-medium text-lg">Deskripsi</label>
                         <textarea value={data.description} onChange={(e) => setData('description', e.target.value)} rows={7} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3"></textarea>
@@ -138,7 +138,7 @@ const Create = () => {
                             <option value="Besi">Besi</option>
                         </select>
                     </div>
-                    <div className="flex justify-end gap-5">
+                    <div className="flex justify-center md:justify-end gap-5">
                         <Link href="/admin/products" className="bg-red-button hover:bg-red-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Batal</Link>
                         <button disabled={processing} className="bg-green-button hover:bg-green-button-darker text-white text-start font-bold rounded-lg shadow-lg py-1 px-10 transform duration-200">Simpan</button>
                     </div>

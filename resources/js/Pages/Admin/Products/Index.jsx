@@ -64,15 +64,15 @@ const Index = ({products}) => {
 
     return(
         <AdminLayout>
-            <div className='px-8 py-5 flex justify-between items-center'>
-                <h1 className='text-3xl font-bold'>Semua Produk</h1>
-                <Link href='/admin/product/create' className='py-1 px-3 text-white font-bold bg-gray-button rounded-md shadow-lg hover:bg-gray-button-darker transform duration-300'>Tambah produk</Link>
+            <div className='px-4 md:px-8 py-5 flex justify-between items-center'>
+                <h1 className='text-xl md:text-3xl font-bold'>Semua Produk</h1>
+                <Link href='/admin/product/create' className='py-1 px-1 md:px-3 text-white font-bold bg-gray-button rounded-md shadow-lg hover:bg-gray-button-darker transform duration-300'>Tambah produk</Link>
             </div>
-            <div className="relative ml-8">
-                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-2 px-4 pl-10 w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
+            <div className="relative ml-4 md:ml-8 mr-4 md:mr-0">
+                <input type="search" placeholder="Cari" value={search} onChange={(e) => setSearch(e.target.value)} className="py-1 md:py-2 px-4 pl-10 w-full md:w-1/2 rounded focus:outline-none focus:ring-2 border shadow bg-gray-300" />
                 <FontAwesomeIcon icon={faMagnifyingGlass} className="absolute top-3 left-3 text-gray-400"/>
             </div>
-            <div className="p-8">
+            <div className="p-4 md:p-8">
                 <table className="rounded-xl shadow-xl w-full text-center">
                     <thead className="bg-gray-300 font-bold text-gray-800">
                         <tr>
@@ -80,8 +80,8 @@ const Index = ({products}) => {
                             <th>Nama</th>
                             <th>Harga</th>
                             <th></th>
-                            <th>Kuantitas</th>
-                            <th>Status</th>
+                            <th className="hidden md:table-cell">Kuantitas</th>
+                            <th className="hidden md:table-cell">Status</th>
                             <th>Tambah</th>
                             <th></th>
                         </tr>
@@ -94,8 +94,8 @@ const Index = ({products}) => {
                                     <td onClick={(e) => handleDetailedProduct(e, product.id)} className="hover:underline cursor-pointer">{product.name}</td>
                                     <td>Rp. {product.price}</td>
                                     <td>/{product.unit}</td>
-                                    <td>{product.quantity}</td>
-                                    <td>
+                                    <td className="hidden md:table-cell">{product.quantity}</td>
+                                    <td className="hidden md:table-cell">
                                         <div className={`flex justify-center items-center ${product.quantity>0 ? 'bg-green-area' : 'bg-red-area'} rounded-full py-1`}>
                                             { product.quantity > 0 
                                              ? 'in stock'
@@ -105,7 +105,7 @@ const Index = ({products}) => {
                                     </td>
                                     <td>
                                         {
-                                            <div className="flex justify-center items-center mx-3 gap-3">
+                                            <div className="flex justify-center items-center mx-3 gap-1 md:gap-3">
                                                 <FontAwesomeIcon onClick={(e) => handleMinus(e, i)} icon={faCircleMinus} className={`${tempAmount[i]===1 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
                                                 <h1 className="text-md">{tempAmount[i]}</h1>
                                                 <FontAwesomeIcon onClick={(e) => handlePlus(e, i)} icon={faCirclePlus} className={`${tempAmount[i]===product.quantity && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>

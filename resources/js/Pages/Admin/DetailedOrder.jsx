@@ -12,8 +12,8 @@ const DetailedOrder = ({order}) => {
 
     return (
         <AdminLayout>
-            <h1 className="text-3xl font-bold px-8 py-5">Detailed Order #{order.id}</h1>
-            <div className="p-8 flex flex-col gap-10">
+            <h1 className="text-xl md:text-3xl font-bold px-4 md:px-8 py-5">Detailed Order #{order.id}</h1>
+            <div className="p-4 md:p-8 flex flex-col gap-10">
                 <table className="rounded shadow-xl w-full text-center">
                     <thead className="bg-gray-300 font-bold text-gray-800">
                         <tr>
