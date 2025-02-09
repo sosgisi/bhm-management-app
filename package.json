@@ -2,8 +2,9 @@
     "private": true,
     "type": "module",
     "scripts": {
+        "dev": "vite --host 0.0.0.0 --port=${PORT:-5173}",
         "build": "vite build",
-        "dev": "vite"
+        "start": "php artisan serve --host=0.0.0.0 --port=8000"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^4.3.4",
