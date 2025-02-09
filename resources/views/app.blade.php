@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
     <title>BHM</title>
     @viteReactRefresh
-    @vite('resources/js/app.jsx')
+    @vite(['resources/js/app.jsx'], secure: true)
     @inertiaHead
     @routes
 </head>
