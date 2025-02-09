@@ -11,8 +11,9 @@ export default defineConfig({
         react(),
     ],
     server: {
-        host: 'localhost', // Use localhost to avoid [::1] issues
-        cors: true,       // Enable CORS
-        port: 5173,       // Ensure the port matches your `npm run dev`
+        host: '0.0.0.0', // Bind to all interfaces (Fix for Render)
+        port: process.env.PORT || 5173, // Use Render’s PORT environment variable
+        cors: true, // Enable CORS for API calls
+        strictPort: true, // Avoid port conflicts
     },
 });
