@@ -15,5 +15,6 @@ export default defineConfig({
         port: parseInt(process.env.PORT) || 9000, // ✅ Match Railway's port
         cors: true,
         strictPort: true, // Prevent conflicts
+        https: true,
     },
 });
