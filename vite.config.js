@@ -11,9 +11,9 @@ export default defineConfig({
         react(),
     ],
     server: {
-        host: '0.0.0.0', // Bind to all interfaces (Fix for Render)
-        port: process.env.PORT || 5173, // Use Render’s PORT environment variable
-        cors: true, // Enable CORS for API calls
-        strictPort: true, // Avoid port conflicts
+        host: '0.0.0.0', // ✅ Bind to all interfaces
+        port: parseInt(process.env.PORT) || 9000, // ✅ Match Railway's port
+        cors: true,
+        strictPort: true, // Prevent conflicts
     },
 });
