@@ -12,7 +12,7 @@ export default defineConfig({
     ],
     server: {
         host: '0.0.0.0', // ✅ Bind to all interfaces
-        port: parseInt(process.env.PORT) || 9000, // ✅ Match Railway's port
+        port: parseInt(process.env.PORT) || 8000, // ✅ Match Railway's port
         cors: true,
         strictPort: true, // Prevent conflicts
         https: true,
