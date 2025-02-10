@@ -7,6 +7,7 @@ const Create = () => {
     const [preview, setPreview] = useState()
     const [customUnit, setCustomUnit] = useState(""); // State for custom unit
     const [isCustomUnit, setIsCustomUnit] = useState(false);
+    const formData = new FormData()
     const {data, setData, post, processing, errors} = useForm({
         name: null,
         description: null,
@@ -45,8 +46,26 @@ const Create = () => {
         }
     }
 
-    const handleCreate = (e) => {
+    const handleCreate = async(e) => {
         e.preventDefault()
+
+        formData.append("file", data.image)
+        formData.append("upload_preset", "bhm-product-images")
+        formData.append("cloud_name", "due3z3bx7")
+        let imageUrl = null
+        if(data.name!==null && data.price!==null && data.unit!==null && data.quantity!==null){
+            try{
+                const res = await fetch("https://api.cloudinary.com/v1_1/due3z3bx7/image/upload", {
+                    method: "POST",
+                    body: formData
+                })
+                imageUrl = await res.json()
+            }catch(err){
+                console.log('catch ', err)
+            }
+        }
+        setData('image', imageUrl?.url || null)
+        
         post('/admin/products')
     }
 
