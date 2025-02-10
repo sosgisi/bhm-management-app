@@ -22,7 +22,7 @@ const Orders = ({orders}) => {
                                         order.products.map((product, j) => (
                                             <div key={j} className="py-1 px-2 flex justify-between">
                                                 <div className="flex gap-3">
-                                                    <img src={`/storage/${product.image}`} alt="" className="w-8"/>
+                                                    <img src={product.image} alt={product.image} className="w-8"/>
                                                     <p>{product.name}</p>
                                                 </div>
                                                 <p>{`x ${product.pivot.quantity} ${product.unit}`}</p>

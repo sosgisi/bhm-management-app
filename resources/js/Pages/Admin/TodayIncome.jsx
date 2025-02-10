@@ -73,7 +73,7 @@ const DetailedIncome = ({income}) => {
                             {
                             income.products.map((product, i) => (
                                 <tr key={i}>
-                                    <td className="hidden md:table-cell p-3 items-center justify-center"><img src={`/storage/${product.image}`} alt="" className="h-7"/></td>
+                                    <td className="hidden md:table-cell p-3 items-center justify-center"><img src={product.image} alt={product.image} className="h-7"/></td>
                                     <td>{product.name}</td>
                                     <td className="hidden md:table-cell">Rp. {product.price}</td>
                                     <td>{product.pivot.quantity}</td>

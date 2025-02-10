@@ -28,7 +28,7 @@ const DetailedOrder = ({order}) => {
                         {
                             order.products.map((product, i) => (
                             <tr key={i}>
-                                <td className="p-3 flex justify-center items-center"><img src={`/storage/${product.image}`} alt="" className="h-7" /></td>
+                                <td className="p-3 flex justify-center items-center"><img src={product.image} alt={product.image} className="h-7" /></td>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.pivot.quantity} {product.unit}</td>
