@@ -50,22 +50,17 @@ class ProductsController extends Controller
             'category' => 'nullable|string'
         ]);
 
-        if ($request->hasFile('image')) {
-            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
-        } else {
+        $uploadedFileUrl = null;
+        if ($request->image) {
             $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         }
 
-        // // Upload the image and store it in the 'public/products' directory
-        // $imagePath = $request->file('image')->store('product-images');
-
-        // Create a new product and save the image path along with other data
         Product::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'price' => $validated['price'],
             'unit' => $validated['unit'],
-            'image' => $uploadedFileUrl, // Store the image path
+            'image' => $uploadedFileUrl,
             'quantity' => $validated['quantity'],
             'category' => $validated['category'],
         ]);
