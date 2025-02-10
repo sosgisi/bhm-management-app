@@ -7,9 +7,18 @@ use App\Http\Controllers\IncomeController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\RoleMiddleware;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::redirect('/', '/guest/dashboard');
+
+// General redirection
+Route::get('/', function () {
+    if (Auth::check()) {
+        return Auth::user()->role === 'Admin' ? redirect()->route('admin.dashboard') : redirect()->route('user.dashboard');
+    }
+    return redirect()->route('login');
+});
 
 // Guest routes group
 Route::middleware('guest')->group(function () {

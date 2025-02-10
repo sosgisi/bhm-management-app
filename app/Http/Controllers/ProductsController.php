@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Cloudinary\Cloudinary;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary as FacadesCloudinary;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -52,9 +51,9 @@ class ProductsController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $uploadedFileUrl = FacadesCloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         } else {
-            $uploadedFileUrl = FacadesCloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
         }
 
         // // Upload the image and store it in the 'public/products' directory
@@ -97,11 +96,11 @@ class ProductsController extends Controller
             if ($product->image) {
                 // Extract the public ID from the Cloudinary URL
                 $publicId = pathinfo($product->image, PATHINFO_FILENAME);
-                FacadesCloudinary::destroy($publicId);
+                Cloudinary::destroy($publicId);
             }
 
             // Upload new image to Cloudinary and get the URL
-            $uploadedFileUrl = FacadesCloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $uploadedFileUrl = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
             $validated['image'] = $uploadedFileUrl; // Store the new URL
         }
 
@@ -121,7 +120,7 @@ class ProductsController extends Controller
         if ($product->image) {
             // Extract the public ID from the Cloudinary URL
             $publicId = pathinfo($product->image, PATHINFO_FILENAME);
-            FacadesCloudinary::destroy($publicId);
+            Cloudinary::destroy($publicId);
         }
 
         // if ($product->image) {
