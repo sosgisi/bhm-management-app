@@ -1,6 +1,7 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
 import { Link, router, useForm } from "@inertiajs/react"
 import { useState } from "react"
+import { extractPublicId } from 'cloudinary-build-url'
 
 const Edit = ({product}) => {
 
@@ -17,35 +18,32 @@ const Edit = ({product}) => {
         description: product.description,
         category: product.category,
     })
+    const [prevImage, setPrevImage] = useState(product.image)
+    const [imageChanged, setImageChanged] = useState(false)
 
-    const handleUpdate = (e) => {
+    const handleUpdate = async(e) => {
         e.preventDefault()
+        let publicId = null
+        if(imageChanged){
+            publicId = extractPublicId(prevImage)
+        }
         router.post(`/admin/products/${product.id}`, {
             ...data,
+            prevImage: publicId,
             _method: "put",
         },{
             onError: (error) => setErrors(error),
         })
+        setImageChanged(false)
     }
-
-    const handleUnitChange = (e) => {
-        const selectedValue = e.target.value;
-        setData("unit", selectedValue);
-        setIsCustomUnit(selectedValue === "custom");
-
-        if (selectedValue !== "custom") {
-            setCustomUnit(""); // Clear custom input if predefined is selected
-        }
-    };
-
-    const handleCustomUnitChange = (e) => {
-        setCustomUnit(e.target.value);
-        setData("unit", e.target.value); // Update the form data with the custom unit
-    };
 
     const handleFileChange = (e) => {
         e.preventDefault()
         const selectedFile = e.target.files[0]
+        if(typeof data.image === "string"){
+            setPrevImage(data.image)
+        }
+        setImageChanged(true)
         setData('image', selectedFile)
         if(selectedFile){
             const reader = new FileReader()
@@ -55,6 +53,20 @@ const Edit = ({product}) => {
             reader.readAsDataURL(selectedFile)
         }
     }
+
+    const handleUnitChange = (e) => {
+        const selectedValue = e.target.value;
+        setData("unit", selectedValue);
+        setIsCustomUnit(selectedValue === "custom");
+        if (selectedValue !== "custom") {
+            setCustomUnit(""); // Clear custom input if predefined is selected
+        }
+    };
+
+    const handleCustomUnitChange = (e) => {
+        setCustomUnit(e.target.value);
+        setData("unit", e.target.value); // Update the form data with the custom unit
+    };
 
     return(
         <AdminLayout>
@@ -117,7 +129,7 @@ const Edit = ({product}) => {
                         {
                             preview && 
                             <div className="flex justify-center items-center">
-                                <img src={`/storage/${preview}`} alt="Preview" className="h-36" />
+                                <img src={preview} alt="Preview" className="h-36" />
                             </div>
                         }
                     </div>

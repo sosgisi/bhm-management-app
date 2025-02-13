@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
-
-// use function Pest\Laravel\json;
 
 class ProductsController extends Controller
 {
@@ -40,12 +36,16 @@ class ProductsController extends Controller
 
     public function productStore(Request $request)
     {
+        $upload = cloudinary()->upload($request->file('image')->getRealPath());
+        $uploadedFileUrl = $upload->getSecurePath();
+        $uploadedPublicId = $upload->getPublicId();
+
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
-            'image' => 'nullable|string',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
             'quantity' => 'required|integer',
             'category' => 'nullable|string'
         ]);
@@ -55,7 +55,8 @@ class ProductsController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'unit' => $validated['unit'],
-            'image' => $validated['image'],
+            'image' => $uploadedFileUrl,
+            'public_id' => $uploadedPublicId,
             'quantity' => $validated['quantity'],
             'category' => $validated['category'],
         ]);
@@ -70,23 +71,44 @@ class ProductsController extends Controller
 
     public function productUpdate(Request $request, Product $product)
     {
-        $validate = $request->validate([
+        $uploadedFileUrl = null;
+        $uploadedPublicId = null;
+        if ($request->hasFile('image')) {
+            if ($request->prevImage) {
+                cloudinary()->destroy($request->prevImage);
+            }
+            $upload = cloudinary()->upload($request->file('image')->getRealPath());
+            $uploadedFileUrl = $upload->getSecurePath();
+            $uploadedPublicId = $upload->getPublicId();
+        }
+
+        $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
-            'image' => 'nullable|string',
+            'image' => 'nullable',
             'quantity' => 'required|integer',
-            'category' => 'nullable|string',
+            'category' => 'nullable|string'
         ]);
 
-        $product->update($validate);
+        $product->update([
+            'name' => $validated['name'],
+            'description' => $validated['description'],
+            'price' => $validated['price'],
+            'unit' => $validated['unit'],
+            'image' => $uploadedFileUrl ?? $product->image,
+            'public_id' => $uploadedPublicId ?? $product->public_id,
+            'quantity' => $validated['quantity'],
+            'category' => $validated['category'],
+        ]);
 
         return redirect()->route('admin.products')->with('success', 'Produk berhasil diperbarui!');
     }
 
-    public function productDestroy(Product $product)
+    public function productDestroy(Request $request, Product $product)
     {
+        cloudinary()->destroy($request->publicId);
         $product->delete();
         return redirect()->route('admin.products')->with('success', 'Produk berhasil dihapus!');
     }

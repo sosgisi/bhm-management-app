@@ -1,11 +1,14 @@
 import { Link, router } from "@inertiajs/react"
 import AdminLayout from "../../../Layouts/AdminLayout"
+import { extractPublicId } from 'cloudinary-build-url'
 
 const Detailed = ({product}) => {
 
     const handleDelete = (e) => {
         e.preventDefault()
+        const publicId = extractPublicId(product.image)
         router.post(`/admin/products/${product.id}`, {
+            publicId: publicId,
             _method: "delete"
         })
     }
@@ -15,7 +18,7 @@ const Detailed = ({product}) => {
             <h1 className="text-xl md:text-3xl font-bold pt-5 pb-0 md:pb-5 px-4 md:px-8">Detail Produk #{product.id}</h1>
             <div className="p-4 md:p-8 flex flex-col md:flex-row gap-5">
                 <div>
-                    <img src={`/storage/${product.image}`} alt="" className="h-40 shadow-xl border rounded"/>
+                    <img src={product.image} alt={product.image} className="h-40 shadow-xl border rounded"/>
                 </div>
                 <div className="flex flex-col gap-2 md:w-1/3">
                     <p className="relative text-lg font-medium">

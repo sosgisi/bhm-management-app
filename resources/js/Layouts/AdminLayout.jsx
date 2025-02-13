@@ -58,7 +58,7 @@ const AdminLayout = ({children}) => {
             }
             <div className='flex md:grid grid-cols-5 grid-rows-12 min-h-screen bg-slate-300'>
                 {/* sidebar */}
-                <nav className='fixed top-0 left-0 bottom-0 md:relative z-10 w-[60px] md:w-auto px-3 py-3 lg:p-5 h-screen md:h-auto flex flex-col justify-between font-bold lg:text-lg md:text-md bg-sidebar row-start-2 row-end-13'>
+                <nav className='fixed top-0 left-0 md:relative z-10 w-[60px] md:w-auto px-3 py-3 lg:p-5 h-screen md:h-auto flex flex-col justify-between font-bold lg:text-lg md:text-md bg-sidebar row-start-2 row-end-13'>
                     <div className='flex flex-col gap-10'>
                         <Link href='/admin/dashboard' className="flex md:hidden text-black text-md lg:text-3xl font-medium underline cursor-pointer underline-offset-1 decoration-4 decoration-underline">BHM</Link>
                         <Link href='/admin/dashboard' className={`group ${url==='/admin/dashboard' ? 'bg-black text-white pointer-events-none' : 'hover:bg-gray-50 cursor-pointer'} flex gap-3 items-center justify-start py-1 px-2 md:px-3 lg:px-4 rounded transform duration-300`}>
