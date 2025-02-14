@@ -13,7 +13,7 @@ const Account = () => {
 
     return (
         <AdminLayout>
-            <h1 className="px-4 md:px-8 py-5 font-bold text-xl md:text-3xl">Account</h1>
+            <h1 className="ml-14 px-4 md:px-8 py-5 font-bold text-xl md:text-3xl">Account</h1>
             <div className="flex justify-between px-4 md:px-8">
                 <h1 className='text-md lg:text-xl'>{auth.user[0].email}</h1>
                 <Link onClick={handleLogout} className='bg-red-button text-white font-bold rounded py-1 px-5 hover:bg-red-button-darker'>Logout</Link> 

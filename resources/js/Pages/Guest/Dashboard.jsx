@@ -2,10 +2,9 @@ import { Link } from "@inertiajs/react"
 import GuestLayout from "../../Layouts/GuestLayout"
 
 const Dashboard = ({productsTotal}) => {
-    console.log(productsTotal)
     return(
         <GuestLayout>
-            <div className="px-4 md:px-8 py-5 flex justify-between">
+            <div className="ml-14 px-4 md:px-8 py-5 flex justify-between">
                 <h1 className='text-3xl font-bold'>Utama</h1>
                 <Link href='/login' className='md:hidden bg-green-button text-white px-4 py-1 rounded shadow-xl hover:bg-green-button-darker transform duration-200'>Login</Link>
             </div>

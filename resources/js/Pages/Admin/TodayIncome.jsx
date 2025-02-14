@@ -46,7 +46,7 @@ const DetailedIncome = ({income}) => {
 
     return(
         <AdminLayout>
-            <div className="flex items-center justify-between">
+            <div className="ml-14 flex items-center justify-between">
                 <h1 className="text-xl md:text-3xl font-bold mx-4 md:mx-8 my-5">Pemasukan Hari ini</h1>
                 <Link href="/admin/incomes" className="flex md:hidden mr-5 bg-gray-button hover:bg-gray-button-darker text-white font-bold rounded px-3">Semua</Link>
             </div>
@@ -75,9 +75,9 @@ const DetailedIncome = ({income}) => {
                                 <tr key={i}>
                                     <td className="hidden md:table-cell p-3 items-center justify-center"><img src={product.image} alt={product.image} className="h-7"/></td>
                                     <td>{product.name}</td>
-                                    <td className="hidden md:table-cell">Rp. {product.price}</td>
+                                    <td className="hidden md:table-cell">Rp {new Intl.NumberFormat('id-ID').format(product.price)}</td>
                                     <td>{product.pivot.quantity}</td>
-                                    <td>Rp. {product.pivot.quantity * product.price}</td>
+                                    <td>Rp {new Intl.NumberFormat('id-ID').format(product.pivot.quantity * product.price)}</td>
                                     <td>
                                         <div className="flex justify-center items-center gap-1 md:gap-3 mx-3">
                                             <FontAwesomeIcon onClick={(e) => handleMinusChange(e, product.id, product.pivot.quantity)} icon={faCircleMinus} className={`${product.pivot.quantity===0 && 'pointer-events-none text-gray-500'} size-5 hover:text-gray-700 cursor-pointer`}/>
@@ -96,7 +96,7 @@ const DetailedIncome = ({income}) => {
                     income && 
                     <div className="flex justify-end items-center gap-5 text-md md:text-xl font-bold">
                         <h3>Total: </h3>
-                        <h3 className="bg-gray-300 px-8 rounded">Rp. {income.income}</h3>
+                        <h3 className="bg-gray-300 px-8 rounded">Rp {new Intl.NumberFormat('id-ID').format(income.income)}</h3>
                     </div>
                 }
             </div>

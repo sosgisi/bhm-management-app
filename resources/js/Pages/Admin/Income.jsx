@@ -28,7 +28,7 @@ const Income = ({incomes}) => {
 
     return(
         <AdminLayout>
-            <h1 className="text-xl md:text-3xl font-bold mx-4 md:mx-8 my-5">Semua Pemasukan</h1>
+            <h1 className="ml-14 text-xl md:text-3xl font-bold mx-4 md:mx-8 my-5">Semua Pemasukan</h1>
             <div className="flex gap-5 p-4 md:p-8">
                 <h1 className="font-bold">Cari tanggal: </h1>
                 <input type="date" onChange={(e) => setSearch(e.target.value)} className="bg-gray-300 rounded px-2"/>
@@ -48,7 +48,7 @@ const Income = ({incomes}) => {
                                 <tr key={i} onClick={(e) => handleDetailedIncome(e, income.id)} className="hover:bg-gray-100 cursor-pointer">
                                     <td className="p-3">{i+1}</td>
                                     <td>{income.date}</td>
-                                    <td>Rp. {income.income}</td>
+                                    <td>Rp {new Intl.NumberFormat('id-ID').format(income.income)}</td>
                                 </tr>
                             ))
                         }

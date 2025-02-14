@@ -14,7 +14,7 @@ class ProductsController extends Controller
         $search = $request->input('search');
         $products = Product::when($search, function ($query, $search) {
             return $query->where('name', 'like', "%{$search}%");
-        })->latest()->get();
+        })->latest()->paginate(20);
 
         $path = 'Guest/Products';
         if (Auth::check()) {
@@ -36,9 +36,13 @@ class ProductsController extends Controller
 
     public function productStore(Request $request)
     {
-        $upload = cloudinary()->upload($request->file('image')->getRealPath());
-        $uploadedFileUrl = $upload->getSecurePath();
-        $uploadedPublicId = $upload->getPublicId();
+        $uploadedFileUrl = null;
+        $uploadedPublicId = null;
+        if ($request->hasFile('image')) {
+            $upload = cloudinary()->upload($request->file('image')->getRealPath());
+            $uploadedFileUrl = $upload->getSecurePath();
+            $uploadedPublicId = $upload->getPublicId();
+        }
 
         $validated = $request->validate([
             'name' => 'required|string',
@@ -46,7 +50,8 @@ class ProductsController extends Controller
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
             'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-            'quantity' => 'required|integer',
+            'public_id' => 'nullable',
+            'quantity' => 'required|string',
             'category' => 'nullable|string'
         ]);
 
@@ -88,7 +93,8 @@ class ProductsController extends Controller
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
             'image' => 'nullable',
-            'quantity' => 'required|integer',
+            'public_id' => 'nullable',
+            'quantity' => 'required|string',
             'category' => 'nullable|string'
         ]);
 
@@ -108,7 +114,10 @@ class ProductsController extends Controller
 
     public function productDestroy(Request $request, Product $product)
     {
-        cloudinary()->destroy($request->publicId);
+        // cloudinary()->destroy($request->publicId);
+        if ($product->public_id) {
+            cloudinary()->destroy($product->public_id);
+        }
         $product->delete();
         return redirect()->route('admin.products')->with('success', 'Produk berhasil dihapus!');
     }

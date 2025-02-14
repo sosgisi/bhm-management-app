@@ -18,14 +18,17 @@ const Edit = ({product}) => {
         description: product.description,
         category: product.category,
     })
-    const [prevImage, setPrevImage] = useState(product.image)
+    // const [prevImage, setPrevImage] = useState(product.image)
     const [imageChanged, setImageChanged] = useState(false)
 
     const handleUpdate = async(e) => {
         e.preventDefault()
         let publicId = null
+        // if(imageChanged){
+        //     publicId = extractPublicId(prevImage)
+        // }
         if(imageChanged){
-            publicId = extractPublicId(prevImage)
+            publicId = product.image
         }
         router.post(`/admin/products/${product.id}`, {
             ...data,
@@ -40,9 +43,9 @@ const Edit = ({product}) => {
     const handleFileChange = (e) => {
         e.preventDefault()
         const selectedFile = e.target.files[0]
-        if(typeof data.image === "string"){
-            setPrevImage(data.image)
-        }
+        // if(typeof data.image === "string"){
+        //     setPrevImage(data.image)
+        // }
         setImageChanged(true)
         setData('image', selectedFile)
         if(selectedFile){
@@ -70,7 +73,7 @@ const Edit = ({product}) => {
 
     return(
         <AdminLayout>
-            <h1 className="px-4 md:px-8 pt-5 text-xl md:text-3xl font-bold">Edit Produk</h1>
+            <h1 className="ml-14 px-4 md:px-8 pt-5 text-xl md:text-3xl font-bold">Edit Produk</h1>
             <div className="flex flex-col md:flex-row justify-between gap-5 rounded border border-gray-500 my-5 mx-4 md:mx-8 p-5">
                 <div className={`${errors ? 'gap-0' : 'gap-2'} flex flex-col w-full md:w-1/2`}>
                     <label className="font-medium text-lg">Nama</label>
@@ -119,7 +122,7 @@ const Edit = ({product}) => {
                         }
                     </div>
                     <label className="font-medium text-lg">Kuantitas</label>
-                    <input value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} type="number" className={`${errors.quantity ? 'ring-1 ring-red-500' : 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
+                    <input value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} type="text" className={`${errors.quantity ? 'ring-1 ring-red-500' : 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
                     {
                         errors.quantity &&
                         <p className="text-red-500">{errors.quantity}</p>

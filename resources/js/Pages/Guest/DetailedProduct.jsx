@@ -5,32 +5,23 @@ const DetailedProduct = ({product}) => {
     
     return (
         <GuestLayout>
-            <h1 className="text-xl md:text-3xl font-bold pt-5 pb-0 md:pb-5 px-4 md:px-8">Detail Produk #{product.id}</h1>
+            <h1 className="ml-14 text-xl md:text-3xl font-bold pt-5 pb-0 md:pb-5 px-4 md:px-8">Detail Produk #{product.id}</h1>
             <div className="p-4 md:p-8 flex flex-col md:flex-row gap-5">
-                <div>
-                    <img src={`/storage/${product.image}`} alt="" className="h-40 shadow-xl border rounded"/>
+                <div className="flex-shrink-0">
+                    <img src={product.image} alt={product.name} className="h-40 w-40 object-cover shadow-xl border rounded" />
                 </div>
-                <div className="flex flex-col gap-2 md:w-1/3">
-                    <p className="relative text-lg font-medium">
-                        Nama : &nbsp;
-                        <span className="absolute right-0 font-bold">{product.name}</span>
-                    </p>
-                    <p className="relative text-lg font-medium">
-                        Harga : &nbsp;
-                        <span className="absolute right-0 font-bold">{product.price}</span>
-                    </p>
-                    <p className="relative text-lg font-medium text-balance">
-                        Satuan : &nbsp;
-                        <span className="absolute right-0 font-bold">{product.unit}</span>
-                    </p>
-                    <p className="relative text-lg font-medium">
-                        Kuantitas : &nbsp;
-                        <span className="absolute right-0 font-bold">{product.quantity}</span>
-                    </p>
-                    <p className="relative text-lg font-medium">
-                        Deskripsi : &nbsp;
-                        <span className="absolute right-0 font-bold w-48 text-end">{product.description}</span>
-                    </p>
+                <div className="flex flex-col gap-4 md:w-2/3">
+                    {[{ label: 'Nama', value: product.name },
+                    { label: 'Harga', value: new Intl.NumberFormat('id-ID').format(product.price) },
+                    { label: 'Satuan', value: product.unit },
+                    { label: 'Kuantitas', value: product.quantity },
+                    { label: 'Deskripsi', value: product.description }
+                    ].map((item, index) => (
+                        <div key={index} className="flex justify-between items-start text-lg font-medium">
+                            <span className="text-gray-700">{item.label}:</span>
+                            <span className="font-semibold text-end max-w-xs truncate md:whitespace-normal md:overflow-visible">{item.value}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className="mt-20 ml-5">
