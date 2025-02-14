@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
-            $table->decimal('price');
+            $table->integer('price');
             $table->string('unit');
             $table->string('image')->nullable();
             $table->string('public_id')->nullable();

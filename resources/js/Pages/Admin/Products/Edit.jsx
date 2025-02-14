@@ -1,14 +1,15 @@
 import AdminLayout from "../../../Layouts/AdminLayout"
 import { Link, router, useForm } from "@inertiajs/react"
-import { useState } from "react"
-import { extractPublicId } from 'cloudinary-build-url'
+import { useEffect, useState } from "react"
 
 const Edit = ({product}) => {
 
+    const [imageType, setImageType] = useState()
     const [errors, setErrors] = useState([])
     const [customUnit, setCustomUnit] = useState(""); // State for custom unit
     const [isCustomUnit, setIsCustomUnit] = useState(false);
     const [preview, setPreview] = useState(product.image)
+    const [imageChanged, setImageChanged] = useState(false)
     const { data, setData } = useForm({
         name: product.name,
         price: product.price,
@@ -18,15 +19,18 @@ const Edit = ({product}) => {
         description: product.description,
         category: product.category,
     })
-    // const [prevImage, setPrevImage] = useState(product.image)
-    const [imageChanged, setImageChanged] = useState(false)
+
+    useEffect(() => {
+        if(typeof product.image === 'string'){
+            setImageType('link')
+        }else{
+            setImageType('file')
+        }
+    }, [])
 
     const handleUpdate = async(e) => {
         e.preventDefault()
         let publicId = null
-        // if(imageChanged){
-        //     publicId = extractPublicId(prevImage)
-        // }
         if(imageChanged){
             publicId = product.image
         }
@@ -43,9 +47,6 @@ const Edit = ({product}) => {
     const handleFileChange = (e) => {
         e.preventDefault()
         const selectedFile = e.target.files[0]
-        // if(typeof data.image === "string"){
-        //     setPrevImage(data.image)
-        // }
         setImageChanged(true)
         setData('image', selectedFile)
         if(selectedFile){
@@ -77,7 +78,7 @@ const Edit = ({product}) => {
             <div className="flex flex-col md:flex-row justify-between gap-5 rounded border border-gray-500 my-5 mx-4 md:mx-8 p-5">
                 <div className={`${errors ? 'gap-0' : 'gap-2'} flex flex-col w-full md:w-1/2`}>
                     <label className="font-medium text-lg">Nama</label>
-                    <input value={data.name} onChange={(e) => setData('name', e.target.value)} type="text" className={`${errors.name ? 'ring-1 ring-red-500': 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
+                    <input value={data.name} onChange={(e) => setData('name', e.target.value)} type="text" className={`${errors.name ? 'ring-1 ring-red-500': 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2`}/>
                     {
                         errors.name &&
                         <p className="text-red-500">{errors.name}</p>
@@ -87,7 +88,7 @@ const Edit = ({product}) => {
                         <label className="font-medium text-md">Satuan</label>
                     </div>
                     <div className={`${errors.price || errors.unit ? 'relative mb-0 h-14' : 'mb-5'} flex justify-between gap-2`}>
-                        <input value={data.price} onChange={(e) => setData('price', e.target.value)} type="number" className={`${errors.price && 'ring-1 ring-red-500'} w-full h-8 bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
+                        <input value={data.price} onChange={(e) => setData('price', e.target.value)} type="number" className={`${errors.price && 'ring-1 ring-red-500'} w-full h-8 bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2`}/>
                         {
                             errors.price &&
                             <p className="absolute bottom-0 text-red-500 text-sm">{errors.price}</p>
@@ -122,32 +123,49 @@ const Edit = ({product}) => {
                         }
                     </div>
                     <label className="font-medium text-lg">Kuantitas</label>
-                    <input value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} type="number" className={`${errors.quantity ? 'ring-1 ring-red-500' : 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
+                    <input value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} type="number" className={`${errors.quantity ? 'ring-1 ring-red-500' : 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2`}/>
                     {
                         errors.quantity &&
                         <p className="text-red-500">{errors.quantity}</p>
                     }
-                    <label className="font-medium text-lg">Foto</label>
-                    <div className={`${errors.image && 'ring-1 ring-red-500'} h-40 rounded border border-gray-500`} >
-                        {
-                            preview && 
-                            <div className="flex justify-center items-center">
-                                <img src={preview} alt="Preview" className="h-36" />
+                    <div className="flex justify-between items-center">
+                        <label className="font-medium text-lg">Foto</label>
+                        <div>
+                            <input type="radio" id="file" name="type" value="file" checked={imageType === 'file'} onChange={() => {setImageType('file'); setData('image', null); setPreview(null)}} />
+                            <label htmlFor="file" className="ml-1 mr-5">file</label>
+                            <input type="radio" id="link" name="type" value="link" checked={imageType === 'link'} onChange={() => {setImageType('link'); setData('image', null); setPreview(null)}} />
+                            <label htmlFor="link" className="ml-1">link</label>
+                        </div>
+                    </div>
+                    { imageType === 'file' &&
+                        <>
+                            <div className={`${errors.image && 'ring-1 ring-red-500'} flex justify-center h-40 rounded border border-gray-500 w-1/2`} >
+                                {
+                                    preview && 
+                                    <div className="flex justify-center items-center">
+                                        <img src={preview} alt="Preview" className="h-36" />
+                                    </div>
+                                }
                             </div>
-                        }
-                    </div>
-                    {
-                        errors.image &&
-                        <p className="text-red-500">{errors.image}</p>
+                            {
+                                errors.image &&
+                                <p className="text-red-500">{errors.image}</p>
+                            }
+                            <div className="flex justify-start items-center">
+                                <input type="file" onChange={handleFileChange} className="w-64"/>
+                            </div>
+                        </>
                     }
-                    <div className="flex justify-start items-center">
-                        <input type="file" onChange={handleFileChange} className="w-64"/>
-                    </div>
+                    { imageType === 'link' &&
+                        <>
+                            <input value={data.image} onChange={(e) => setData('image', e.target.value)} type="text" placeholder="enter link" className="py-1 px-2 my-2 outline-none rounded border border-gray-200 focus:border-gray-400"/>
+                        </>
+                    }
                 </div>
                 <div className="flex flex-col gap-5 md:gap-0 justify-between w-full md:w-1/2">
                     <div className="flex flex-col gap-2">
                         <label className="font-medium text-lg">Deskripsi</label>
-                        <textarea value={data.description} onChange={(e) => setData('description', e.target.value)} rows={7} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3"></textarea>
+                        <textarea value={data.description} onChange={(e) => setData('description', e.target.value)} rows={7} className="bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-2"></textarea>
                     </div>
                     <div className="flex justify-end items-center gap-3">
                         <label className="font-medium text-lg">Kategory: </label>

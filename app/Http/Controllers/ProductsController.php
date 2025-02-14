@@ -47,9 +47,9 @@ class ProductsController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
+            'price' => 'required|integer',
             'unit' => 'required|string',
-            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'image' => 'nullable',
             'public_id' => 'nullable',
             'quantity' => 'required|integer',
             'category' => 'nullable|string'
@@ -60,8 +60,8 @@ class ProductsController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'unit' => $validated['unit'],
-            'image' => $uploadedFileUrl,
-            'public_id' => $uploadedPublicId,
+            'image' => $uploadedFileUrl ?? $validated['image'],
+            'public_id' => $uploadedPublicId ?? $validated['image'],
             'quantity' => $validated['quantity'],
             'category' => $validated['category'],
         ]);
@@ -90,7 +90,7 @@ class ProductsController extends Controller
         $validated = $request->validate([
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
+            'price' => 'required|integer',
             'unit' => 'required|string',
             'image' => 'nullable',
             'public_id' => 'nullable',
@@ -112,9 +112,8 @@ class ProductsController extends Controller
         return redirect()->route('admin.products')->with('success', 'Produk berhasil diperbarui!');
     }
 
-    public function productDestroy(Request $request, Product $product)
+    public function productDestroy(Product $product)
     {
-        // cloudinary()->destroy($request->publicId);
         if ($product->public_id) {
             cloudinary()->destroy($product->public_id);
         }
