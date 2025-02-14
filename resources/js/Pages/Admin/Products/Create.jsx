@@ -101,7 +101,7 @@ const Create = () => {
                         }
                     </div>
                     <label className="font-medium text-lg">Kuantitas</label>
-                    <input value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} type="text" className={`${errors.quantity ? 'ring-1 ring-red-500' : 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
+                    <input value={data.quantity} onChange={(e) => setData('quantity', e.target.value)} type="number" className={`${errors.quantity ? 'ring-1 ring-red-500' : 'mb-5'} bg-gray-200 focus:outline-gray-600 rounded border border-gray-500 py-1 px-3`}/>
                     {
                         errors.quantity &&
                         <p className="text-red-500">{errors.quantity}</p>

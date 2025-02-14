@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('unit');
             $table->string('image')->nullable();
             $table->string('public_id')->nullable();
-            $table->string('quantity')->default(0);
+            $table->integer('quantity')->default(0);
             $table->string('category')->nullable();
             $table->timestamps();
         });

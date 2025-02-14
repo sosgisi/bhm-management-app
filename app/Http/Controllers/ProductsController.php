@@ -49,9 +49,9 @@ class ProductsController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
             'unit' => 'required|string',
-            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:10240',
             'public_id' => 'nullable',
-            'quantity' => 'required|string',
+            'quantity' => 'required|integer',
             'category' => 'nullable|string'
         ]);
 
@@ -94,7 +94,7 @@ class ProductsController extends Controller
             'unit' => 'required|string',
             'image' => 'nullable',
             'public_id' => 'nullable',
-            'quantity' => 'required|string',
+            'quantity' => 'required|integer',
             'category' => 'nullable|string'
         ]);
 
