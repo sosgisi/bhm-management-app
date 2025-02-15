@@ -51,10 +51,6 @@ const Create = () => {
         post('/admin/products')
     }
 
-    useEffect(() => {
-        console.log(data)
-    }, [data])
-
     return(
         <AdminLayout>
             <h1 className="ml-14 px-4 md:px-8 pt-5 text-xl md:text-3xl font-bold">Tambah Produk</h1>

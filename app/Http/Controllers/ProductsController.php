@@ -61,7 +61,7 @@ class ProductsController extends Controller
             'price' => $validated['price'],
             'unit' => $validated['unit'],
             'image' => $uploadedFileUrl ?? $validated['image'],
-            'public_id' => $uploadedPublicId ?? $validated['image'],
+            'public_id' => $uploadedPublicId ?? null,
             'quantity' => $validated['quantity'],
             'category' => $validated['category'],
         ]);
@@ -103,8 +103,8 @@ class ProductsController extends Controller
             'description' => $validated['description'],
             'price' => $validated['price'],
             'unit' => $validated['unit'],
-            'image' => $uploadedFileUrl ?? $product->image,
-            'public_id' => $uploadedPublicId ?? $product->public_id,
+            'image' => $uploadedFileUrl ?? $validated['image'],
+            'public_id' => $uploadedPublicId ?? null,
             'quantity' => $validated['quantity'],
             'category' => $validated['category'],
         ]);
