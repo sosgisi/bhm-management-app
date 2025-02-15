@@ -13,6 +13,13 @@ const Detailed = ({product}) => {
         })
     }
 
+    const handleBack = (e) => {
+        e.preventDefault()
+        window.history.back()
+        preserveScroll
+        preserveState
+    }
+
     return (
         <AdminLayout>
             <h1 className="ml-14 text-xl md:text-3xl font-bold pt-5 pb-0 md:pb-5 px-4 md:px-8">Detail Produk #{product.id}</h1>
@@ -41,7 +48,7 @@ const Detailed = ({product}) => {
                 </div>
             </div>
             <div className="absolute bottom-10 right-5 left-5 flex justify-between">
-                <Link href="/admin/products" className="py-1 px-3 md:px-10 text-white font-bold rounded-lg shadow-lg bg-gray-button transform duration-200 hover:bg-gray-button-darker">Back</Link>
+                <Link onClick={handleBack} preserveScroll preserveState className="py-1 px-3 md:px-10 text-white font-bold rounded-lg shadow-lg bg-gray-button transform duration-200 hover:bg-gray-button-darker">Back</Link>
                 <div className="flex gap-3 md:gap-5">
                     <button onClick={(e) => handleDelete(e, product.id)} className="bg-red-button text-white font-bold py-1 px-4 md:px-10 hover:bg-red-button-darker rounded-lg shadow-lg transform duration-200">Delete</button>
                     <Link href={`/admin/products/${product.id}/edit`} className="bg-gray-button text-white font-bold py-1 px-4 md:px-10 hover:bg-gray-button-darker rounded-lg shadow-lg transform duration-200">Edit</Link>
