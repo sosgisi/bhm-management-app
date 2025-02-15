@@ -8,8 +8,8 @@ const Pagination = ({ pagination }) => {
                     key={index}
                     href={link.url || ''}
                     className={`flex items-center justify-center px-3 py-2 text-sm rounded-lg text-gray-600
-                        ${link.active ? 'bg-gray-300 pointer-events-none' : ''} 
-                        ${link.url === null ? '!text-gray-500 pointer-events-none' : ''}`}
+                        ${link.active ? 'bg-gray-300' : ''} 
+                        ${!link.url ? '!text-gray-500' : ''}`}
                     dangerouslySetInnerHTML={{ __html: link.label }}
                 />
             ))}
