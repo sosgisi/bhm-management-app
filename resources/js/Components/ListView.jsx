@@ -3,7 +3,7 @@ import { useState } from "react"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faCircleMinus, faCirclePlus, faPlusSquare } from "@fortawesome/free-solid-svg-icons"
 
-const ListView = ({products}) => {
+const ListView = ({products, role}) => {
 
     const [tempAmount, setTempAmount] = useState(() => new Array(products.data.length).fill(1))
     const { setData, post} = useForm({
@@ -20,7 +20,13 @@ const ListView = ({products}) => {
     }
 
     const handleDetailedProduct = (productId) => {
-        router.post(`/admin/products/${productId}`, {
+        let path = 'guest'
+        if(role === 'Admin'){
+            path = 'admin'
+        }else if(role === 'User'){
+            path = 'user'
+        }
+        router.post(`/${path}/products/${productId}`, {
             _method: "get"
         })
     }
@@ -54,8 +60,12 @@ const ListView = ({products}) => {
                         <th className="border"></th>
                         <th className="border">Kuantitas</th>
                         <th className="border">Status</th>
-                        <th className="border">Tambah</th>
-                        <th className="border"></th>
+                        { role === 'Admin' &&
+                            <>
+                                <th className="border">Tambah</th>
+                                <th className="border"></th>
+                            </>
+                        }
                     </tr>
                 </thead>
                 <tbody className="bg-white">
@@ -71,16 +81,20 @@ const ListView = ({products}) => {
                                     {product.quantity > 0 ? 'In stock' : 'Out of stock'}
                                 </span>
                             </td>
-                            <td className="border px-3">
-                                <div className="flex justify-center items-center gap-2">
-                                    <FontAwesomeIcon onClick={() => handleMinus(i)} icon={faCircleMinus} className={`size-5 cursor-pointer ${tempAmount[i] === 1 ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
-                                    <span className="text-md">{tempAmount[i]}</span>
-                                    <FontAwesomeIcon onClick={() => handlePlus(i)} icon={faCirclePlus} className={`size-5 cursor-pointer ${tempAmount[i] === product.quantity ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
-                                </div>
-                            </td>
-                            <td className="border px-3">
-                                <FontAwesomeIcon icon={faPlusSquare} onClick={() => handleAddProduct(product.id)} className={`size-6 text-green-500 hover:text-green-700 ${product.quantity === 0 ? 'text-gray-400 pointer-events-none' : ''}`}/>
-                            </td>
+                            { role === 'Admin' &&
+                                <>
+                                    <td className="border px-3">
+                                        <div className="flex justify-center items-center gap-2">
+                                            <FontAwesomeIcon onClick={() => handleMinus(i)} icon={faCircleMinus} className={`size-5 cursor-pointer ${tempAmount[i] === 1 ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
+                                            <span className="text-md">{tempAmount[i]}</span>
+                                            <FontAwesomeIcon onClick={() => handlePlus(i)} icon={faCirclePlus} className={`size-5 cursor-pointer ${tempAmount[i] === product.quantity ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
+                                        </div>
+                                    </td>
+                                    <td className="border px-3">
+                                        <FontAwesomeIcon icon={faPlusSquare} onClick={() => handleAddProduct(product.id)} className={`size-6 text-green-500 hover:text-green-700 ${product.quantity === 0 ? 'text-gray-400 pointer-events-none' : ''}`}/>
+                                    </td>
+                                </>
+                            }
                         </tr>
                     ))}
                 </tbody>

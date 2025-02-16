@@ -3,6 +3,13 @@ import GuestLayout from "../../Layouts/GuestLayout"
 
 const DetailedProduct = ({product}) => {
     
+    const handleBack = (e) => {
+        e.preventDefault()
+        window.history.back()
+        preserveScroll
+        preserveState
+    }
+    
     return (
         <GuestLayout>
             <h1 className="ml-14 text-xl md:text-3xl font-bold pt-5 pb-0 md:pb-5 px-4 md:px-8">Detail Produk #{product.id}</h1>
@@ -25,7 +32,7 @@ const DetailedProduct = ({product}) => {
                 </div>
             </div>
             <div className="mt-20 ml-5">
-                <Link href="/guest/products" className="py-2 px-10 text-white font-bold rounded-lg shadow-lg bg-gray-button transform duration-200 hover:bg-gray-button-darker">Back</Link>
+                <Link onClick={handleBack} preserveScroll preserveState className="py-2 px-10 text-white font-bold rounded-lg shadow-lg bg-gray-button transform duration-200 hover:bg-gray-button-darker">Back</Link>
             </div>
         </GuestLayout>
     )

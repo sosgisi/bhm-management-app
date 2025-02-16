@@ -6,9 +6,7 @@ const Detailed = ({product}) => {
 
     const handleDelete = (e) => {
         e.preventDefault()
-        // const publicId = extractPublicId(product.image)
         router.post(`/admin/products/${product.id}`, {
-            // publicId: publicId,
             _method: "delete"
         })
     }

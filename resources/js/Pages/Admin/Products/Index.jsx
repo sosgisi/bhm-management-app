@@ -9,7 +9,9 @@ import GripView from "../../../Components/GripView"
 
 const Index = ({products}) => {
 
-    const [viewType, setViewType] = useState('grip')
+    const [viewType, setViewType] = useState(() => {
+        return localStorage.getItem('viewType') || 'grip'
+    })
     const [search, setSearch] = useState(null)
 
     useEffect(() => {
@@ -24,6 +26,10 @@ const Index = ({products}) => {
         
         return () => clearTimeout(delayDebounceFn);
     }, [search])
+
+    useEffect(() => {
+        localStorage.setItem('viewType', viewType)
+    }, [viewType])
 
     return(
         <AdminLayout>
@@ -41,8 +47,8 @@ const Index = ({products}) => {
             </div>
             {
                 viewType === 'list' 
-                ? <ListView products={products} />
-                : <GripView products={products} />
+                ? <ListView products={products} role="Admin" />
+                : <GripView products={products} role="Admin" />
             }
             {products.links && <Pagination pagination={products.links} />}
         </AdminLayout>

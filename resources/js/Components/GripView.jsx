@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { router, useForm } from "@inertiajs/react"
 import { useState } from "react"
 
-const GripView = ({products}) => {
+const GripView = ({products, role}) => {
 
     const [tempAmount, setTempAmount] = useState(() => new Array(products.data.length).fill(1))
     const { setData, post} = useForm({
@@ -11,7 +11,13 @@ const GripView = ({products}) => {
     })
 
     const handleDetailedProduct = (productId) => {
-        router.post(`/admin/products/${productId}`, {
+        let path = 'guest'
+        if(role === 'Admin'){
+            path = 'admin'
+        }else if(role === 'User'){
+            path = 'user'
+        }
+        router.post(`/${path}/products/${productId}`, {
             _method: "get"
         })
     }
@@ -50,11 +56,13 @@ const GripView = ({products}) => {
                     <div>
                         <img src={product.image} alt={product.name} className="w-full h-20 object-cover rounded-t"/>
                         <div className="p-2 flex flex-col justify-between gap-3">
-                            <div onClick={() => handleDetailedProduct(product.id)} className="cursor-pointer hover:underline flex flex-col gap-1">
-                                <h1 className="text-sm font-bold">{product.name}</h1>
-                                <h1 className="text-sm">Rp {new Intl.NumberFormat('id-ID').format(product.price)} /{product.unit}</h1>
+                            <div onClick={() => handleDetailedProduct(product.id)} className="flex flex-col gap-1">
+                                <div className="cursor-pointer hover:underline">
+                                    <h1 className="text-sm font-bold">{product.name}</h1>
+                                    <h1 className="text-sm">Rp {new Intl.NumberFormat('id-ID').format(product.price)} /{product.unit}</h1>
+                                </div>
                                 <h1 className="text-xs text-gray-500">{product.description}</h1>
-                                <h1 className="text-sm flex items-center">
+                                <h1 className="text-sm flex items-center ">
                                     <span className={`px-2 rounded-full text-white ${product.quantity > 0 ? 'bg-green-500' : 'bg-red-500'} whitespace-nowrap overflow-hidden text-ellipsis`}>
                                         {product.quantity > 0 ? 'In stock' : 'Out of stock'}
                                     </span>
@@ -62,15 +70,16 @@ const GripView = ({products}) => {
                             </div>
                         </div>
                     </div>
-                    <div className="flex items-center justify-between text-sm p-2">
-                        <div className="flex justify-center items-center gap-2">
-                            <FontAwesomeIcon onClick={() => handleMinus(i)} icon={faCircleMinus} className={`size-5 cursor-pointer ${tempAmount[i] === 1 ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
-                            <span className="text-md">{tempAmount[i]}</span>
-                            <FontAwesomeIcon onClick={() => handlePlus(i)} icon={faCirclePlus} className={`size-5 cursor-pointer ${tempAmount[i] === product.quantity ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
+                    { role === 'Admin' && 
+                        <div className="flex items-center justify-between text-sm p-2">
+                            <div className="flex justify-center items-center gap-2">
+                                <FontAwesomeIcon onClick={() => handleMinus(i)} icon={faCircleMinus} className={`size-5 cursor-pointer ${tempAmount[i] === 1 ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
+                                <span className="text-md">{tempAmount[i]}</span>
+                                <FontAwesomeIcon onClick={() => handlePlus(i)} icon={faCirclePlus} className={`size-5 cursor-pointer ${tempAmount[i] === product.quantity ? 'text-gray-400 pointer-events-none' : 'hover:text-gray-700'}`}/>
+                            </div>
+                            <FontAwesomeIcon icon={faPlusSquare} onClick={() => handleAddProduct(product.id)} className={`size-6 text-green-500 hover:text-green-700 ${product.quantity === 0 ? 'text-gray-400 pointer-events-none' : ''}`}/>
                         </div>
-                        {/* <button onClick={() => handleAddProduct(product.id)} className={`bg-green-500 text-white rounded hover:bg-green-300 px-2 ${product.quantity === 0 ? 'bg-gray-400 pointer-events-none' : ''}`}>Add</button> */}
-                        <FontAwesomeIcon icon={faPlusSquare} onClick={() => handleAddProduct(product.id)} className={`size-6 text-green-500 hover:text-green-700 ${product.quantity === 0 ? 'text-gray-400 pointer-events-none' : ''}`}/>
-                    </div>
+                    }
                 </div>
             ))}
         </div>
